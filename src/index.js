@@ -6,7 +6,7 @@
 //something with frames
 //function update game area
 
-
+//Basic component class, used for player, sanitizer and corona
 class Component {
     constructor(x, y, width, height) {
         this.width = width
@@ -16,7 +16,7 @@ class Component {
         this.speedX = 0
         this.speedY = 0
         this.img = new Image()
-        this.img.src = src
+        this.img.src
     }
 
     //Defines how fast component moves
@@ -31,7 +31,7 @@ class Component {
         context.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 
-    //Find positions for crashing login
+    //Find positions for crashing logic
     left() {
         return this.x
     }
@@ -48,10 +48,10 @@ class Component {
     //crashing logic
     crashWith(object) {
         return (
-            this.bottom() === object.top() &&
             this.top() === object.bottom() &&
-            this.right() === object.left() &&
-            this.left() === object.right()
+            //Need to define this statement better
+            (this.right() === object.left() ||
+                this.left() === object.right())
         )
     }
 }
@@ -59,8 +59,8 @@ class Component {
 //PLAYER
 //Make a class for the player
 class Player extends Component {
-    constructor(x, y, width, height, name, src) {
-        super(x, y, width, height, src)
+    constructor(x, y, width, height, name) {
+        super(x, y, width, height)
         //Constructor should contain name
         this.name = name
         //Constructor should contain score, starting on 0
@@ -83,7 +83,6 @@ class Player extends Component {
             }
         }
     }
-
     //should receive damage when touched by corona
     decreaseImmunity() {
         return this.immunity -= 1
@@ -93,21 +92,34 @@ class Player extends Component {
         return this.score += speed
     }
 }
+
+//Even listener that makes player move
 document.addEventListener('keydown', function (e) {
     player.movePlayer(e.keyCode)
 })
 
 //SANITIZER
 class Sanitizer extends Component {
-    //Moves up (Y-decreasing) when activated
-    //Starts on current X of the player
+    constructor(x) {
+        this.height = 5
+        this.width = 5
+        //Starts on current X of the player
+        this.x = x
+        //starts at the bottom
+        this.y = 500
+        //Moves up (Y-decreasing) when activated
+        this.speedY = -5
+        this.img = new Image()
+        this.img.src = `src`
+    }
     //If it doesn't meet the same position as corona it will move out of the game area
 }
-
+//array that will keep track of all created sanitizers
 const allSanitizers = []
 
+//function that will create a new sanitizer component
 function newSanitizerSpray() {
-    const sanitizer = new Sanitizer(player.x, 0, 5, 5)
+    const sanitizer = new Sanitizer(player.x)
     allSanitizers.push(sanitizer)
 }
 
@@ -118,8 +130,9 @@ document.addEventListener('keydown', function (e) {
     }
 })
 //Should disappear when meets same position as a corona + increase score of player
-function checkSanitized() {
-    const sanitized = allSanitizers.some(())
+//IN PROGRESS
+function checkIfSanitized() {
+    const sanitized = allSanitizers.some
 }
 //CORONA
 //Make a class for corona
