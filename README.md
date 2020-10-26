@@ -41,3 +41,12 @@ If the player gets hit by 4 viruses, the player goes to Intensive care. If the p
 - the player on the bottom
 - the coronaviruses coming from the top
 - outside the canvas frame: instructions of the game
+
+--- once player looses all the immunitinty --------->
+
+- a big image of a mean coronavirus appears looking at YOU!
+
+
+
+
+
