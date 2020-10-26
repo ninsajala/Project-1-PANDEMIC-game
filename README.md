@@ -21,6 +21,7 @@ If the player gets hit by 4 viruses, the player goes to Intensive care. If the p
 
 
 // User interface: what are the main screens --- 
+
 ****** First screen shows: ******
 - name of the game <PANDEMIC>
 - instructions of the game
