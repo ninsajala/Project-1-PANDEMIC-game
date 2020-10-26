@@ -21,7 +21,7 @@ If the player gets hit by 4 viruses, the player goes to Intensive care. If the p
 
 
 // User interface: what are the main screens --- 
-First screen shows:
+****** First screen shows: ******
 - name of the game <PANDEMIC>
 - instructions of the game
 - name of the creators
@@ -29,7 +29,7 @@ First screen shows:
 
 --- once START is pressed --------->
 
-Second screen shows:
+****** Second screen shows: ******
 - a background image of the inside of a blood vessel 
 - the bar of the immunity score
 - the player on the bottom
