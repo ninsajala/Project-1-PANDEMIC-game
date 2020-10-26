@@ -44,6 +44,8 @@ If the player gets hit by 4 viruses, the player goes to Intensive care. If the p
 
 --- once player looses all the immunitinty --------->
 
+****** Third screen shows: ******
+
 - a big image of a mean coronavirus appears looking at YOU!
 
 
