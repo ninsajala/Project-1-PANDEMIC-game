@@ -13,8 +13,8 @@ const myGameArea = {
         ctx = this.canvas.getContext("2d");
         gameBoard.appendChild(this.canvas)
         //call updateGameArea() every 20 milliseconds
-        updateGameScreen()
-        // this.interval = setInterval(updateGameScreen, 20);
+        //updateGameScreen()
+        this.interval = setInterval(updateGameScreen, 20);
         this.frameNo = 0;
         //loads the spray sound
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
@@ -57,57 +57,6 @@ function Sound(src) {
         this.sound.pause();
     }
 }
-
-//Basic component class, used for player, sanitizer and corona
-// class movingGameElement {
-//     constructor(x, y, width, height) {
-//         this.width = width
-//         this.height = height
-//         this.x = x
-//         this.y = y
-//         this.speedX = 0
-//         this.speedY = 0
-//         this.img = new Image()
-//         this.img.src
-//     }
-
-//     //Defines how fast component moves
-//     newPosition() {
-//         this.x += this.speedX
-//         this.y += this.speedY
-//     }
-
-//     //Makes component move
-//     update() {
-//         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
-//     }
-
-//     //Find positions for crashing logic
-//     left() {
-//         return this.x
-//     }
-//     right() {
-//         return this.x + this.width
-//     }
-//     top() {
-//         return this.y
-//     }
-//     bottom() {
-//         return this.y + this.height
-//     }
-
-//     //crashing logic
-//     crashWith(object) {
-//         if (
-//             this.top() === object.bottom() &&
-//             ((this.left() >= object.left() && this.left() < object.right()) ||
-//                 (this.right() >= object.left() && this.right() < object.right())
-//             )
-//         ) {
-//             return true
-//         }
-//     }
-// }
 
 //PLAYER
 //Make a class for the player
@@ -170,7 +119,7 @@ class Player {
     movePlayer(keyCode) {
         //should not be able to leave the game area or move up/down
         if (this.x <= 0 || this.x >= 500) {
-            return console.log('Cannot move out of canvas')
+            this.speedX = 0
         } else {
             switch (keyCode) {
                 case 39:
@@ -192,7 +141,7 @@ class Player {
 }
 
 //Event listener that makes player move
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keyup', function (e) {
     player.movePlayer(e.keyCode)
 })
 
@@ -204,18 +153,20 @@ class Sanitizer {
         this.width = 20
         this.height = 20
         //Moves up (Y-decreasing) when activated
-        this.speedY = -5
-        this.img = new Image()
-        this.img.src = `../images/sanitizer-spray.png`
+        this.speedY = 5
+        //this.img = new Image()
+        //this.img.src = `../images/sanitizer-spray.png`
     }
 
     newPosition() {
-        this.y += this.speedY
+        this.y -= this.speedY
     }
 
     //Makes component move
     update() {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+        ctx.fillStyle = 'green'
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+        //ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 
     //Find positions for crashing logic
@@ -250,12 +201,10 @@ const allSanitizers = []
 //function that will create a new sanitizer component
 function newSanitizerSpray() {
     myGameArea.spraySound.play()
-    setTimeout(myGameArea.spraySound.stop(), 1000)
-    const sanitizer = new Sanitizer(player.x)
+    //setTimeout(myGameArea.spraySound.stop(), 1000)
+    let sanitizer = new Sanitizer(player.x)
     allSanitizers.push(sanitizer)
 }
-
-
 
 //Sanitizer should be activated by SPACE
 document.addEventListener('keydown', function (e) {
@@ -281,6 +230,13 @@ function checkIfSanitized() {
     }
 }
 
+function updateSanitizers() {
+    for (let i = 0; i < allSanitizers.length; i++) {
+        allSanitizers[i].newPosition()
+        allSanitizers[i].update()
+    }
+}
+
 function updateGameScreen() {
     myGameArea.clear(); //clears the canvas to print new graphic
     player.newPosition(); //places player on new coordinates
@@ -289,6 +245,7 @@ function updateGameScreen() {
     //checkGameOver(); // immunity=0
     updateScoreScreen(player);
     updateImmunityScreen(player);
+    updateSanitizers()
 }
 
 
