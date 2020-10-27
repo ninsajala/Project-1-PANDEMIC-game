@@ -6,22 +6,157 @@
 //something with frames
 //function update game area
 
+//Basic component class, used for player, sanitizer and corona
+class Component {
+    constructor() {
+        this.width
+        this.height
+        this.x
+        this.y
+        this.speedX = 0
+        this.speedY = 0
+        this.img = new Image()
+        this.img.src
+    }
+
+    //Defines how fast component moves
+    newPosition() {
+        this.x += this.speedX
+        this.y += this.speedY
+    }
+
+    //Makes component move
+    update() {
+        const context = gameArea.context
+        context.drawImage(this.img, this.x, this.y, this.width, this.height)
+    }
+
+    //Find positions for crashing logic
+    left() {
+        return this.x
+    }
+    right() {
+        return this.x + this.width
+    }
+    top() {
+        return this.y
+    }
+    bottom() {
+        return this.y + this.height
+    }
+
+    //crashing logic
+    crashWith(object) {
+        if (
+            this.top() === object.bottom() &&
+            ((this.left() >= object.left() && this.left() < object.right()) ||
+                (this.right() >= object.left() && this.right() < object.right())
+            )
+        ) {
+            return true
+        }
+    }
+}
+
 //PLAYER
 //Make a class for the player
-//Constructor should contain score, starting on 0
-//Constructor should contain name
-//Constructor should contain immunity level, starting on 3
-//Should move according to left or right arrow pressed (X decreasing/increasing)
-//should not be able to leave the game area or move up/down
-//should receive damage when touched by corona
-//Should increase score when corona is shot
+class Player extends Component {
+    constructor(name) {
+        this.x = 260
+        this.y = 500
+        this.width = 20
+        this.height = 20
+        //Can move from right to left
+        this.speedX = 0
+        //Constructor should contain name
+        this.name = name
+        //Constructor should contain score, starting on 0
+        this.score = 0
+        //Constructor should contain immunity level, starting on 3
+        this.immunity = 3
+        this.img = new Image()
+        this.img.src = `src`
+    }
+    //Should move according to left or right arrow pressed (X decreasing/increasing)
+    movePlayer(keycode) {
+        //should not be able to leave the game area or move up/down
+        if (this.x <= 0 || this.x >= 500) {
+            return console.log('Cannot move out of canvas')
+        } else {
+            switch (keycode) {
+                case 39:
+                    return this.speedX += 1;
+                    break;
+                case 37:
+                    return this.speedX -= 1;
+            }
+        }
+    }
+    //should receive damage when touched by corona
+    decreaseImmunity() {
+        return this.immunity -= 1
+    }
+    //Should increase score when corona is shot
+    increaseScore(speed) {
+        return this.score += speed
+    }
+}
+
+//Event listener that makes player move
+document.addEventListener('keydown', function (e) {
+    player.movePlayer(e.keyCode)
+})
 
 //SANITIZER
-//Should be activated by SPACE
-//Moves up (Y-decreasing) when activated
-//Starts on current X of the player
-//Should disappear when meets same position as a corona
-//If it doesn't meet the same position as corona it will move out of the game area
+class Sanitizer extends Component {
+    constructor(x) {
+        this.height = 5
+        this.width = 5
+        //Starts on current X of the player
+        this.x = x
+        //starts at the bottom
+        this.y = 500
+        //Moves up (Y-decreasing) when activated
+        this.speedY = -5
+        this.img = new Image()
+        this.img.src = `src`
+    }
+    //If it doesn't meet the same position as corona it will move out of the game area
+}
+//array that will keep track of all created sanitizers
+const allSanitizers = []
+
+//function that will create a new sanitizer component
+function newSanitizerSpray() {
+    const sanitizer = new Sanitizer(player.x)
+    allSanitizers.push(sanitizer)
+}
+
+//Sanitizer should be activated by SPACE
+document.addEventListener('keydown', function (e) {
+    if (e.keyCode === 32) {
+        newSanitizerSpray()
+    }
+})
+
+const allCoronas = []
+//Should disappear when meets same position as a corona + increase score of player
+//IN PROGRESS
+const sanitized = allSanitizers.some(function (object) {
+    return sanitizer.crashWith(object)
+})
+
+function checkIfSanitized() {
+    for (let i = 0; i < allCoronas.length; i++) {
+        if (sanitized(allCoronas[i])) {
+            player.increaseScore()
+            allCoronas[i].speedY = 0
+            allCoronas[i].width = 0
+            allCoronas[i].height = 0
+        }
+    }
+}
+
 
 //CORONA
 //Make a class for corona
@@ -61,3 +196,5 @@ function updateGameScreen(){
 //should activate the player
 //should draw the score on the board
 //should draw the immunity on the board
+
+//Check Game over
