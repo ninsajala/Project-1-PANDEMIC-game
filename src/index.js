@@ -1,5 +1,29 @@
 //GAME AREA
 //Make a class for the game area
+// javascripts/intro.js
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const myGameArea = {
+    canvas: document.createElement("canvas"),
+    start: function () {
+        this.canvas.width = 500;
+        this.canvas.height = 500;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        // call updateGameArea() every 20 milliseconds
+        this.interval = setInterval(updateGameArea, 20);
+        this.frameNo = 0;
+    },
+    clear: function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+function updateGameArea() {
+    myGameArea.clear();
+    player.update();
+}
 //Should have a method that draws the board (called when the start-button is clicked)
 //should display score of player
 //should display immunity of player
