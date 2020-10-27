@@ -16,15 +16,31 @@ const myGameArea = {
         //loads the spray sound
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
     },
+    // clear the canvas before starting new draw
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
 
+// after clearing the canvas, we have to add update the game area
+
+
+function updateScoreScreen(player) {
+    this.ctx.font = "18px Creepster";
+    this.ctx.fillStyle = "black";
+    this.ctx.fillText(`Score: ${player.score}`, 420, 210);
+},
+function updateImmunityScreen(player) {
+    this.ctx.font = "18px Creepster";
+    this.ctx.fillStyle = "black";
+    this.ctx.fillText(`Immunity: ${player.immunity}`, 420, 200);
+},
 
 //Should have a method that draws the board (called when the start-button is clicked)
 //should display score of player
+
 //should display immunity of player
+
 //something with frames
 //function update game area
 
@@ -202,6 +218,7 @@ function checkIfSanitized() {
 //Should 'disappear' when meeting same position as sanitizer
 //Should receive a (random?) speed (Y increasing)
 //Should make immunity of player decrease when meeting same position as the player
+
 //Should make score of player increase by corona speed when meeting same position as sanitizer
 
 
@@ -211,14 +228,16 @@ function checkIfSanitized() {
 
 
 
-function updateGameScreen(){
+function updateGameScreen() {
     myGameArea.clear(); //clears the canvas to print new graphic
     player.newPosition(); //places player on new coordinates
     player.update(); //puts canvas of player on screen
     drawVirus(); //will create new virus obstacles
     checkGameOver(); // immunity=0
     myGameArea.score(); // update and draw the score
-} 
+    updateScoreScreen(player);
+    updateImmunityScreen(player);
+}
 
 // Create the falling corona virussses
 let coronas = [];
