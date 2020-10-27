@@ -151,8 +151,8 @@ function checkIfSanitized() {
         if (sanitized(allCoronas[i])) {
             player.increaseScore()
             allCoronas[i].speedY = 0
-            allCoronas[i].x = -50
-            allCoronas[i].y = -50
+            allCoronas[i].width = 0
+            allCoronas[i].height = 0
         }
     }
 }
