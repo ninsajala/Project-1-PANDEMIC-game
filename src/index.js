@@ -1,6 +1,5 @@
 //GAME AREA
 //Make a class for the game area
-// javascripts/intro.js
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -14,6 +13,8 @@ const myGameArea = {
         // call updateGameArea() every 20 milliseconds
         this.interval = setInterval(updateGameArea, 20);
         this.frameNo = 0;
+        //loads the spray sound
+        this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
     },
     // clear the canvas before starting new draw
     clear: function () {
@@ -23,12 +24,6 @@ const myGameArea = {
 
 // after clearing the canvas, we have to add update the game area
 
-function updateGameArea() {
-    myGameArea.clear();
-    player.update();
-    updateScoreScreen(player);
-    updateImmunityScreen(player);
-}
 
 function updateScoreScreen(player) {
     this.ctx.font = "18px Creepster";
@@ -48,6 +43,22 @@ function updateImmunityScreen(player) {
 
 //something with frames
 //function update game area
+
+//Class for all sounds
+function Sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function () {
+        this.sound.play();
+    }
+    this.stop = function () {
+        this.sound.pause();
+    }
+}
 
 //Basic component class, used for player, sanitizer and corona
 class Component {
@@ -70,8 +81,8 @@ class Component {
 
     //Makes component move
     update() {
-        const context = gameArea.context
-        context.drawImage(this.img, this.x, this.y, this.width, this.height)
+        const ctx = myGameArea.ctx
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 
     //Find positions for crashing logic
@@ -107,8 +118,8 @@ class Player extends Component {
     constructor(name) {
         this.x = 260
         this.y = 500
-        this.width = 20
-        this.height = 20
+        this.width = 50
+        this.height = 75
         //Can move from right to left
         this.speedX = 0
         //Constructor should contain name
@@ -118,7 +129,7 @@ class Player extends Component {
         //Constructor should contain immunity level, starting on 3
         this.immunity = 3
         this.img = new Image()
-        this.img.src = `src`
+        this.img.src = `../images/bottle.png`
     }
     //Should move according to left or right arrow pressed (X decreasing/increasing)
     movePlayer(keycode) {
@@ -153,8 +164,8 @@ document.addEventListener('keydown', function (e) {
 //SANITIZER
 class Sanitizer extends Component {
     constructor(x) {
-        this.height = 5
-        this.width = 5
+        this.height = 20
+        this.width = 20
         //Starts on current X of the player
         this.x = x
         //starts at the bottom
@@ -162,7 +173,7 @@ class Sanitizer extends Component {
         //Moves up (Y-decreasing) when activated
         this.speedY = -5
         this.img = new Image()
-        this.img.src = `src`
+        this.img.src = `../images/sanitizer-spray.png`
     }
     //If it doesn't meet the same position as corona it will move out of the game area
 }
@@ -171,6 +182,8 @@ const allSanitizers = []
 
 //function that will create a new sanitizer component
 function newSanitizerSpray() {
+    myGameArea.spraySound.play()
+    setTimeout(myGameArea.spraySound.stop(), 1000)
     const sanitizer = new Sanitizer(player.x)
     allSanitizers.push(sanitizer)
 }
@@ -182,7 +195,6 @@ document.addEventListener('keydown', function (e) {
     }
 })
 
-const allCoronas = []
 //Should disappear when meets same position as a corona + increase score of player
 //IN PROGRESS
 const sanitized = allSanitizers.some(function (object) {
@@ -190,8 +202,8 @@ const sanitized = allSanitizers.some(function (object) {
 })
 
 function checkIfSanitized() {
-    for (let i = 0; i < allCoronas.length; i++) {
-        if (sanitized(allCoronas[i])) {
+    for (let i = 0; i < coronas.length; i++) {
+        if (sanitized(coronas[i])) {
             player.increaseScore()
             allCoronas[i].speedY = 0
             allCoronas[i].width = 0
@@ -199,7 +211,6 @@ function checkIfSanitized() {
         }
     }
 }
-
 
 //CORONA
 //Make a class for corona
@@ -211,34 +222,74 @@ function checkIfSanitized() {
 //Should make score of player increase by corona speed when meeting same position as sanitizer
 
 
-/* To make movement possible, the canvas needs to be updated every 20ms.
-Needs to be placed within myGameArea start: 
-this.interval = setInterval(updateGameScreen, 15);
-
-Needs to be place within myGameArea (outside of start):
-clear: function () {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);}
 
 
-function updateGameScreen(){
-    myGameArea.clear(); clears the canvas to print new graphic
-    player.newPosition(); places player on new coordinates
-    player.update(); puts canvas of player on screen
-    updateVirus(); will create new virus obstacles
+
+
+
+
+function updateGameScreen() {
+    myGameArea.clear(); //clears the canvas to print new graphic
+    player.newPosition(); //places player on new coordinates
+    player.update(); //puts canvas of player on screen
+    drawVirus(); //will create new virus obstacles
     checkGameOver(); // immunity=0
     myGameArea.score(); // update and draw the score
+    updateScoreScreen(player);
+    updateImmunityScreen(player);
 }
 
+// Create the falling corona virussses
+let coronas = [];
+let noOfCoronas = 5;
+let x = 0;
+let y = 0;
 
 
+function drawVirus() {
+    for (let i = 0; i < noOfCoronas; i++) {
+        ctx.drawImage(coronas[i].image, coronas[i], coronas[i].x, coronas[i].y); // the corona
+        coronas[i].y += coronas[i].speed; //set falling speed
+        if (coronas[i].y > 500) { //(height) repeat corona when it is out of view
+            coronas[i].y = -25 // accounts for images size, adjust when image
+            coronas[i].x = Math.random() * 500 //(height) virus appears randomly on width
 
+        }
+    }
+}
 
+function setupVirus() {
+    setInterval(drawVirus, 36);
+    for (let i = 0; i < noOfCoronas; i++) {
+        let fallingCorona = new Object();
+        fallingCorona["image"] = new Image();
+        fallingCorona.image.src = 'https://openclipart.org/image/800px/205972';
+        fallingCorona["x"] = Math.random() * 500; //width
+        fallingCorona["y"] = Math.random() * 5;
+        fallingCorona["speed"] = 3 + Math.random() * 5;
+        coronas.push(fallingCorona)
+    }
+}
+setupVirus();
+
+let player
+let name
+
+function askPlayerName() {
+    return name = alert('Hi Corona warrior! What is your name?')
+}
 //START BUTTON
+const startButton = getElementById('start-button')
 //start button event listener
-//should draw the board
-//should set a timed interval that will create more and more corona
-//should activate the player
-//should draw the score on the board
-//should draw the immunity on the board
+startButton.addEventListener('click', function () {
+    startButton.innerHTML = 'Restart'
+    //should draw the board
+    myGameArea()
+    //should activate the player
+    askPlayerName()
+    player = new Player(`${name}`)
+})
+
+
 
 //Check Game over
