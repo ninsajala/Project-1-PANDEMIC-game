@@ -209,7 +209,7 @@ function updateGameScreen(){
     myGameArea.score(); // update and draw the score
 } */
 
-// Create the falling corona virusses
+// Create the falling corona virussses
 let coronas = [];
 let noOfCoronas = 5;
 let x = 0;
