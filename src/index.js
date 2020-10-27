@@ -34,9 +34,25 @@ function updateGameScreen(){
     updateVirus(); will create new virus obstacles
     checkGameOver(); // immunity=0
     myGameArea.score(); // update and draw the score
+} */
+
+// Create the falling corona virusses
+let coronas = [];
+function newCoronaVirus(){
+    let x = Math.floor(Math.random() * canvasWidth) + 1;
+    let y = 0;
+    let speed = Math.floor(Math.random() * 3) + 1;
+    coronas.push({"x":x, "y":y, "s":s});
 }
 
+function updateVirus(){
+    for (let i=0; i < coronas.length; i++){
+        ctx.drawImage(coronas[i].image, coronas[i], coronas[i].x, coronas[i].y); // the corona
+        coronas[i].y += coronas[i].speed; //set falling speed
+        if(coronas[i].y >)
 
+    }
+}
 
 
 
