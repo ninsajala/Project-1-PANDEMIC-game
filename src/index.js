@@ -168,7 +168,7 @@ function checkIfSanitized() {
 
 
 /* To make movement possible, the canvas needs to be updated every 20ms.
-Needs to be placed within myGameArea start: 
+Needs to be placed within myGameArea start:
 this.interval = setInterval(updateGameScreen, 15);
 
 Needs to be place within myGameArea (outside of start):
@@ -184,8 +184,6 @@ function updateGameScreen(){
     checkGameOver(); // immunity=0
     myGameArea.score(); // update and draw the score
 }
-
-
 
 
 
