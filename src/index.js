@@ -211,21 +211,36 @@ function updateGameScreen(){
 
 // Create the falling corona virusses
 let coronas = [];
-function newCoronaVirus(){
-    let x = Math.floor(Math.random() * canvasWidth) + 1;
-    let y = 0;
-    let speed = Math.floor(Math.random() * 3) + 1;
-    coronas.push({"x":x, "y":y, "s":s});
-}
+let noOfCoronas = 5;
+let x = 0;
+let y= 0;
 
-function updateVirus(){
-    for (let i=0; i < coronas.length; i++){
+
+function drawVirus(){
+    for (let i=0; i < noOfCoronas; i++){
         ctx.drawImage(coronas[i].image, coronas[i], coronas[i].x, coronas[i].y); // the corona
         coronas[i].y += coronas[i].speed; //set falling speed
-        if(coronas[i].y >)
+        if(coronas[i].y > 500){ //(height) repeat corona when it is out of view
+            coronas[i].y = -25 // accounts for images size, adjust when image
+            coronas[i].x = Math.random() * 500 //(height) virus appears randomly on width
+
+    }
+}}
+
+function setupVirus(){
+    setInterval(drawVirus, 36);
+    for (let i = 0; i < noOfCoronas; i++){
+        let fallingCorona = new Object();
+        fallingCorona["image"] = new Image();
+        fallingCorona.image.src = 'https://openclipart.org/image/800px/205972';
+        fallingCorona["x"] = Math.random() * 500; //width
+        fallingCorona["y"] = Math.random() * 5;
+        fallingCorona["speed"] = 3 + Math.random() * 5;
+        coronas.push(fallingCorona)
 
     }
 }
+setupVirus();
 
 
 
