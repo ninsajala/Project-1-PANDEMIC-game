@@ -13,8 +13,8 @@ const myGameArea = {
         ctx = this.canvas.getContext("2d");
         gameBoard.appendChild(this.canvas)
         //call updateGameArea() every 20 milliseconds
-        updateGameScreen()
-        // this.interval = setInterval(updateGameScreen, 20);
+        //updateGameScreen()
+        this.interval = setInterval(updateGameScreen, 20);
         this.frameNo = 0;
         //loads the spray sound
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
@@ -60,57 +60,6 @@ function Sound(src) {
         this.sound.pause();
     }
 }
-
-//Basic component class, used for player, sanitizer and corona
-// class movingGameElement {
-//     constructor(x, y, width, height) {
-//         this.width = width
-//         this.height = height
-//         this.x = x
-//         this.y = y
-//         this.speedX = 0
-//         this.speedY = 0
-//         this.img = new Image()
-//         this.img.src
-//     }
-
-//     //Defines how fast component moves
-//     newPosition() {
-//         this.x += this.speedX
-//         this.y += this.speedY
-//     }
-
-//     //Makes component move
-//     update() {
-//         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
-//     }
-
-//     //Find positions for crashing logic
-//     left() {
-//         return this.x
-//     }
-//     right() {
-//         return this.x + this.width
-//     }
-//     top() {
-//         return this.y
-//     }
-//     bottom() {
-//         return this.y + this.height
-//     }
-
-//     //crashing logic
-//     crashWith(object) {
-//         if (
-//             this.top() === object.bottom() &&
-//             ((this.left() >= object.left() && this.left() < object.right()) ||
-//                 (this.right() >= object.left() && this.right() < object.right())
-//             )
-//         ) {
-//             return true
-//         }
-//     }
-// }
 
 //PLAYER
 //Make a class for the player
@@ -173,7 +122,7 @@ class Player {
     movePlayer(keyCode) {
         //should not be able to leave the game area or move up/down
         if (this.x <= 0 || this.x >= 500) {
-            return console.log('Cannot move out of canvas')
+            this.speedX = 0
         } else {
             switch (keyCode) {
                 case 39:
@@ -195,7 +144,7 @@ class Player {
 }
 
 //Event listener that makes player move
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keyup', function (e) {
     player.movePlayer(e.keyCode)
 })
 
@@ -207,18 +156,20 @@ class Sanitizer {
         this.width = 20
         this.height = 20
         //Moves up (Y-decreasing) when activated
-        this.speedY = -5
-        this.img = new Image()
-        this.img.src = `../images/sanitizer-spray.png`
+        this.speedY = 5
+        //this.img = new Image()
+        //this.img.src = `../images/sanitizer-spray.png`
     }
 
     newPosition() {
-        this.y += this.speedY
+        this.y -= this.speedY
     }
 
     //Makes component move
     update() {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+        ctx.fillStyle = 'green'
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+        //ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 
     //Find positions for crashing logic
@@ -253,12 +204,10 @@ const allSanitizers = []
 //function that will create a new sanitizer component
 function newSanitizerSpray() {
     myGameArea.spraySound.play()
-    setTimeout(myGameArea.spraySound.stop(), 1000)
-    const sanitizer = new Sanitizer(player.x)
+    //setTimeout(myGameArea.spraySound.stop(), 1000)
+    let sanitizer = new Sanitizer(player.x)
     allSanitizers.push(sanitizer)
 }
-
-
 
 //Sanitizer should be activated by SPACE
 document.addEventListener('keydown', function (e) {
@@ -284,6 +233,13 @@ function checkIfSanitized() {
     }
 }
 
+function updateSanitizers() {
+    for (let i = 0; i < allSanitizers.length; i++) {
+        allSanitizers[i].newPosition()
+        allSanitizers[i].update()
+    }
+}
+
 function updateGameScreen() {
     myGameArea.clear(); //clears the canvas to print new graphic
     player.newPosition(); //places player on new coordinates
@@ -292,52 +248,40 @@ function updateGameScreen() {
     //checkGameOver(); // immunity=0
     updateScoreScreen(player);
     updateImmunityScreen(player);
+    updateSanitizers();
+    updateCoronas()
 }
 
+const coronas = [];
 
-// class Corona {
-//     constructor() {
-//         this.y = 500
-//         this.width = 20
-//         this.height = 20
-//         this.speedY = 3 + Math.random() * 5;
-//         this.x = Math.random() * 500;
-//         this.image = new Image();
-//         this.image.src = 'https://openclipart.org/image/800px/205972'
-//     }
-// }
-// // Create the falling corona virusses
-// let coronas = [];
-// let noOfCoronas = 5;
-// let x = 0;
-// let y = 0;
+  function updateCoronas(){
+    for(let i=0; i < coronas.length; i++){
+        let oneCorona = coronas[i];
+        oneCorona.y += 1; 
+        // creating circles
+                ctx.beginPath();
+        // color the circles
+                ctx.fillStyle = "rgb(255,127,80)";
+          // drawing circle
+                ctx.arc(oneCorona.x, oneCorona.y += oneCorona.speed/2, oneCorona.speed * 0.8, 0, oneCorona.radius);
+                ctx.fill();
+          }
 
+    myGameArea.frameNo += 1
+    if(myGameArea.frameNo % 120 === 0) {
+        let x = Math.floor(Math.random()* 500);
+            let speed = Math.floor(Math.random()* 5);
+            let radius = 10* Math.PI;
+    
+            coronas.push({
+                x:x,
+                y:0,
+                speed:speed,
+                radius:radius
+            })}}
+ 
+ 
 
-// function drawVirus() {
-//     for (let i = 0; i < coronas.length; i++) {
-//         ctx.drawImage(coronas[i].image, coronas[i], coronas[i].x, coronas[i].y); // the corona
-//         coronas[i].y += coronas[i].speed; //set falling speed
-//         if (coronas[i].y > 500) { //(height) repeat corona when it is out of view
-//             coronas[i].y = -25 // accounts for images size, adjust when image
-//             coronas[i].x = Math.random() * 500 //(height) virus appears randomly on width
-//         }
-//     }
-// }
-
-// function setupVirus() {
-//     setInterval(drawVirus, 36);
-//   
-//     
-//     // for (let i = 0; i < noOfCoronas; i++) {
-//     //     let fallingCorona = new Corona();
-//     //     fallingCorona["image"] = new Image();
-//     //     // fallingCorona.image.src = 'https://openclipart.org/image/800px/205972';
-//     //     // fallingCorona["x"] = Math.random() * 500; //width
-//     //     // fallingCorona["y"] = Math.random() * 5;
-//     //     // fallingCorona["speed"] = 3 + Math.random() * 5;
-//     //     coronas.push(fallingCorona)
-//     // }
-// }
 
 
 //let name
