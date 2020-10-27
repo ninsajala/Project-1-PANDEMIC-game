@@ -31,6 +31,29 @@
 //Should make immunity of player decrease when meeting same position as the player
 //Should make score of player increase by corona speed when meeting same position as sanitizer
 
+
+/* To make movement possible, the canvas needs to be updated every 20ms.
+Needs to be placed within myGameArea start: 
+this.interval = setInterval(updateGameScreen, 15);
+
+Needs to be place within myGameArea (outside of start):
+clear: function () {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);}
+
+
+function updateGameScreen(){
+    myGameArea.clear(); clears the canvas to print new graphic
+    player.newPosition(); places player on new coordinates
+    player.update(); puts canvas of player on screen
+    updateVirus(); will create new virus obstacles
+    checkGameOver(); // immunity=0
+    myGameArea.score(); // update and draw the score
+}
+
+
+
+
+
 //START BUTTON
 //start button event listener
 //should draw the board
