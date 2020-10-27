@@ -19,6 +19,9 @@ const myGameArea = {
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+
+    //stop: function clearInterval 
+    //score function
 }
 
 
