@@ -8,11 +8,11 @@
 
 //Basic component class, used for player, sanitizer and corona
 class Component {
-    constructor(x, y, width, height) {
-        this.width = width
-        this.height = height
-        this.x = x
-        this.y = y
+    constructor() {
+        this.width
+        this.height
+        this.x
+        this.y
         this.speedX = 0
         this.speedY = 0
         this.img = new Image()
@@ -47,26 +47,35 @@ class Component {
 
     //crashing logic
     crashWith(object) {
-        return (
+        if (
             this.top() === object.bottom() &&
-            //Need to define this statement better
-            (this.right() === object.left() ||
-                this.left() === object.right())
-        )
+            ((this.left() >= object.left() && this.left() < object.right()) ||
+                (this.right() >= object.left() && this.right() < object.right())
+            )
+        ) {
+            return true
+        }
     }
 }
 
 //PLAYER
 //Make a class for the player
 class Player extends Component {
-    constructor(x, y, width, height, name) {
-        super(x, y, width, height)
+    constructor(name) {
+        this.x = 260
+        this.y = 500
+        this.width = 20
+        this.height = 20
+        //Can move from right to left
+        this.speedX = 0
         //Constructor should contain name
         this.name = name
         //Constructor should contain score, starting on 0
         this.score = 0
         //Constructor should contain immunity level, starting on 3
         this.immunity = 3
+        this.img = new Image()
+        this.img.src = `src`
     }
     //Should move according to left or right arrow pressed (X decreasing/increasing)
     movePlayer(keycode) {
@@ -93,7 +102,7 @@ class Player extends Component {
     }
 }
 
-//Even listener that makes player move
+//Event listener that makes player move
 document.addEventListener('keydown', function (e) {
     player.movePlayer(e.keyCode)
 })
@@ -129,11 +138,26 @@ document.addEventListener('keydown', function (e) {
         newSanitizerSpray()
     }
 })
+
+const allCoronas = []
 //Should disappear when meets same position as a corona + increase score of player
 //IN PROGRESS
+const sanitized = allSanitizers.some(function (object) {
+    return sanitizer.crashWith(object)
+})
+
 function checkIfSanitized() {
-    const sanitized = allSanitizers.some
+    for (let i = 0; i < allCoronas.length; i++) {
+        if (sanitized(allCoronas[i])) {
+            player.increaseScore()
+            allCoronas[i].speedY = 0
+            allCoronas[i].x = -50
+            allCoronas[i].y = -50
+        }
+    }
 }
+
+
 //CORONA
 //Make a class for corona
 //Should start at y=0 and a random X
