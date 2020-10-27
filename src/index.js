@@ -28,6 +28,9 @@ const myGameArea = {
     stop: function () {
         clearInterval(this.interval);
     }
+
+    //stop: function clearInterval
+    //score function
 }
 
 function updateGameScreen() {
@@ -210,19 +213,28 @@ document.addEventListener('keydown', function (e) {
     }
 })
 
-const sanitized = allSanitizers.some(function (object) {
-    return sanitizer.crashWith(object)
-})
+// const sanitized = allSanitizers.some(function (object) {
+//     return sanitizer.crashWith(object)
+// })
 
 function checkIfSanitized() {
     for (let i = 0; i < coronas.length; i++) {
-        if (sanitized(coronas[i])) {
-            myGameArea.cleanSound.play()
-            player.increaseScore()
-            allCoronas[i].speedY = 0
-            allCoronas[i].width = 0
-            allCoronas[i].height = 0
+        for (let j = 0; i < allSanitizers.length; j++) {
+            if (allSanitizers[j].crashWith(coronas[j])) {
+                myGameArea.cleanSound.play()
+                player.increaseScore(5)
+                coronas[i].speedY = 0
+                coronas[i].width = 0
+                coronas[i].height = 0
+            }
         }
+        // if (sanitized(coronas[i])) {
+        //     myGameArea.cleanSound.play()
+        //     player.increaseScore(5)
+        //     coronas[i].speedY = 0
+        //     coronas[i].width = 0
+        //     coronas[i].height = 0
+        // }
     }
 }
 
@@ -233,49 +245,48 @@ function updateSanitizers() {
     }
 }
 
-// class Corona {
-//     constructor() {
-//         this.y = 500
-//         this.width = 20
-//         this.height = 20
-//         this.speedY = 3 + Math.random() * 5;
-//         this.x = Math.random() * 500;
-//         this.image = new Image();
-//         this.image.src = 'https://openclipart.org/image/800px/205972'
-//     }
-// }
-// // Create the falling corona virusses
-// let coronas = [];
-// let noOfCoronas = 5;
-// let x = 0;
-// let y = 0;
+function updateGameScreen() {
+    myGameArea.clear(); //clears the canvas to print new graphic
+    player.newPosition(); //places player on new coordinates
+    player.update(); //puts canvas of player on screen
+    //checkGameOver(); // immunity=0
+    updateScoreScreen(player);
+    updateImmunityScreen(player);
+    updateSanitizers();
+    updateCoronas()
+    checkIfSanitized()
+}
 
+const coronas = [];
 
-// function drawVirus() {
-//     for (let i = 0; i < coronas.length; i++) {
-//         ctx.drawImage(coronas[i].image, coronas[i], coronas[i].x, coronas[i].y); // the corona
-//         coronas[i].y += coronas[i].speed; //set falling speed
-//         if (coronas[i].y > 500) { //(height) repeat corona when it is out of view
-//             coronas[i].y = -25 // accounts for images size, adjust when image
-//             coronas[i].x = Math.random() * 500 //(height) virus appears randomly on width
-//         }
-//     }
-// }
+function updateCoronas() {
+    for (let i = 0; i < coronas.length; i++) {
+        let oneCorona = coronas[i];
+        oneCorona.y += 1;
+        // creating circles
+        ctx.beginPath();
+        // color the circles
+        ctx.fillStyle = "rgb(255,127,80)";
+        // drawing circle
+        ctx.arc(oneCorona.x, oneCorona.y += oneCorona.speed / 2, oneCorona.speed * 0.8, 0, oneCorona.radius);
+        ctx.fill();
+    }
 
-// function setupVirus() {
-//     setInterval(drawVirus, 36);
-//     let fallingCorona = new Corona();
-//     coronas.push(fallingCorona)
-//     // for (let i = 0; i < noOfCoronas; i++) {
-//     //     let fallingCorona = new Corona();
-//     //     fallingCorona["image"] = new Image();
-//     //     // fallingCorona.image.src = 'https://openclipart.org/image/800px/205972';
-//     //     // fallingCorona["x"] = Math.random() * 500; //width
-//     //     // fallingCorona["y"] = Math.random() * 5;
-//     //     // fallingCorona["speed"] = 3 + Math.random() * 5;
-//     //     coronas.push(fallingCorona)
-//     // }
-// }
+    myGameArea.frameNo += 1
+    if (myGameArea.frameNo % 120 === 0) {
+        let x = Math.floor(Math.random() * 500);
+        let speed = Math.floor(Math.random() * 5);
+        let radius = 10 * Math.PI;
+
+        coronas.push({
+            x: x,
+            y: 0,
+            speed: speed,
+            radius: radius
+        })
+    }
+}
+
 
 //START BUTTON
 const startButton = document.getElementById('start-button')
@@ -283,7 +294,6 @@ const startButton = document.getElementById('start-button')
 startButton.addEventListener('click', function () {
     startButton.innerHTML = 'Restart'
     player = new Player()
-    //setupVirus();
     myGameArea.start()
 })
 
