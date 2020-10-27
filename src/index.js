@@ -14,6 +14,8 @@ const myGameArea = {
         // call updateGameArea() every 20 milliseconds
         this.interval = setInterval(updateGameArea, 20);
         this.frameNo = 0;
+        //loads the spray sound
+        this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -29,6 +31,22 @@ function updateGameArea() {
 //should display immunity of player
 //something with frames
 //function update game area
+
+//Class for all sounds
+function Sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function () {
+        this.sound.play();
+    }
+    this.stop = function () {
+        this.sound.pause();
+    }
+}
 
 //Basic component class, used for player, sanitizer and corona
 class Component {
@@ -152,6 +170,8 @@ const allSanitizers = []
 
 //function that will create a new sanitizer component
 function newSanitizerSpray() {
+    myGameArea.spraySound.play()
+    setTimeout(myGameArea.spraySound.stop(), 1000)
     const sanitizer = new Sanitizer(player.x)
     allSanitizers.push(sanitizer)
 }
