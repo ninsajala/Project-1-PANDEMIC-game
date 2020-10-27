@@ -15,18 +15,37 @@ const myGameArea = {
         this.interval = setInterval(updateGameArea, 20);
         this.frameNo = 0;
     },
+    // clear the canvas before starting new draw
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
 
+// after clearing the canvas, we have to add update the game area
+
 function updateGameArea() {
     myGameArea.clear();
     player.update();
+    updateScoreScreen(player);
+    updateImmunityScreen(player);
 }
+
+function updateScoreScreen(player) {
+    this.ctx.font = "18px Creepster";
+    this.ctx.fillStyle = "black";
+    this.ctx.fillText(`Score: ${player.score}`, 420, 210);
+},
+function updateImmunityScreen(player) {
+    this.ctx.font = "18px Creepster";
+    this.ctx.fillStyle = "black";
+    this.ctx.fillText(`Immunity: ${player.immunity}`, 420, 200);
+},
+
 //Should have a method that draws the board (called when the start-button is clicked)
 //should display score of player
+
 //should display immunity of player
+
 //something with frames
 //function update game area
 
@@ -188,6 +207,7 @@ function checkIfSanitized() {
 //Should 'disappear' when meeting same position as sanitizer
 //Should receive a (random?) speed (Y increasing)
 //Should make immunity of player decrease when meeting same position as the player
+
 //Should make score of player increase by corona speed when meeting same position as sanitizer
 
 
