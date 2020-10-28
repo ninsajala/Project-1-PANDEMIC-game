@@ -1,3 +1,4 @@
+
 body {
   width: 100%;
   max-height: 1000px;
@@ -21,7 +22,8 @@ h1 {
   font-family: "creepster";
   color: #D03232;
   font-size: 100px;
-  text-shadow: 3px 3px #42BF74;
+  text-shadow: 3px 3px #266e43;
+  
 }
 
 .content-wrapper {
@@ -40,7 +42,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   padding: 1%;
-  margin: 5%;
+  margin: 3%;
   border-radius: 10px;
   text-align: center;
 }
@@ -51,7 +53,11 @@ h1 {
   border-radius: 50%;
   background-image: url('../images/start.png');
   background-size: cover;
+  margin-bottom: 20px;
+  
 }
+
+
 
 #start-button:hover {
   cursor: pointer;
@@ -59,24 +65,31 @@ h1 {
 }
 
 .instructions {
-  color: #42BF74;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  text-shadow: 1px 2px #D03232;
-  padding: 0;
+  color: white;
+  font-family: 'Russo One', sans-serif;
+
+
+  font-size: 16px;
+  font-weight: 1;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgba(112, 151, 251, .8);
+  border: 1px solid  #D03232
 
 }
 
+.instructions p{
+  
+}
+
 .arrow-wrap {
-  background-color: #42BF74;
+  /*background-color: #42BF74;*/
   width: 130px;
   padding: 5px;
   border-radius: 10px;
-  border: 3px solid #D03232;
+  /*border: 1px solid white*/;
 }
 
 canvas {
@@ -85,11 +98,11 @@ canvas {
 }
 
 footer {
-  margin: 5%;
+  margin: 1%;
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inconsolata', monospace;
 }
 
 footer a {
-  color: lightblue;
+  color:  #D03232
 }

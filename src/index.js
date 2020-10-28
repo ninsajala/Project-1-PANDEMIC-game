@@ -50,13 +50,13 @@ function updateGameScreen() {
 
 function updateScoreScreen(player) {
     ctx.font = "20px Creepster";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#D03232";
     ctx.fillText(`Score: ${player.score}`, 400, 20);
 }
 
 function updateImmunityScreen(player) {
     ctx.font = "20px Creepster";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#D03232";
     ctx.fillText(`Immunity: ${player.immunity}`, 400, 50);
 }
 
@@ -268,7 +268,7 @@ function updateCoronas() {
     myGameArea.frameNo += 1
     if (myGameArea.frameNo % 120 === 0) {
         // smyGameArea.fallSound.play()
-        let x = Math.floor(Math.random() * 500);
+        let x = Math.floor(Math.random() * 500) ;
         let speed = Math.floor(Math.random() * 5);
 
 
