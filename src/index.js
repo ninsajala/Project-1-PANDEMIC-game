@@ -3,14 +3,7 @@ let name
 let canvas
 let ctx
 const gameBoard = document.getElementById('game-board')
-let startSound = new Sound(`../sound-effects/tun-tun-tunn-effect.mp3`)
-let backGroundSound = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
-
-window.addEventListener('load', event => {
-    setTimeout(function () {
-        startSound.play()
-    }, 2000)
-})
+let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
 
 const myGameArea = {
     canvas: document.createElement("canvas"),
@@ -21,25 +14,23 @@ const myGameArea = {
         gameBoard.appendChild(this.canvas)
         this.interval = setInterval(updateGameScreen, 20);
         this.frameNo = 0;
-        this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
-        this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`)
-        this.fallSound = new Sound(`../sound-effects/fall-plop.mp3`)
-        this.screamSound = new Sound(`../sound-effects/scream-effect.mp3`)
-        updateScoreScreen(player)
-        updateImmunityScreen(player)
+        this.spraySound = new Sound('../sound-effects/spray-effect.mp3');
+        this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`);
+        this.fallSound = new Sound(`../sound-effects/fall-plop.mp3`);
+        this.screamSound = new Sound(`../sound-effects/scream-effect.mp3`);
+        this.warningSound = new Sound(`../sound-effects/tun-tun-tunn-effect.mp3`);
+        updateScoreScreen(player);
+        updateImmunityScreen(player);
     },
 
     clear: function () {
-        //this.backGroundSound.play()
-        let img = new Image()
-        img.src = '../images/background-option.jpeg'
+        let img = new Image();
+        img.src = '../images/background-option.jpeg';
         ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
     },
     stop: function () {
-        backGroundSound.stop()
         clearInterval(this.interval);
     }
-    //score function
 }
 
 function updateGameScreen() {
@@ -52,18 +43,27 @@ function updateGameScreen() {
     updateCoronas()
     checkIfSanitized()
     anyCollisions()
+    icWarning()
 }
 
 function updateScoreScreen(player) {
     ctx.font = "20px Creepster";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#D03232";
     ctx.fillText(`Score: ${player.score}`, 400, 20);
 }
 
 function updateImmunityScreen(player) {
     ctx.font = "20px Creepster";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#D03232";
     ctx.fillText(`Immunity: ${player.immunity}`, 400, 50);
+}
+
+function icWarning() {
+    if (player.immunity === 1) {
+        ctx.font = "30px Creepster";
+        ctx.fillStyle = "#D03232";
+        ctx.fillText(`INTENSIVE CARE`, 170, 150);
+    }
 }
 
 function Sound(src) {
@@ -159,7 +159,6 @@ document.addEventListener('keyup', (e) => {
     }
 })
 
-//SANITIZER
 class Sanitizer {
     constructor(x) {
         this.x = x
@@ -217,8 +216,12 @@ function anyCollisions() {
         if (player.crashWith(coronas[i])) {
             myGameArea.screamSound.play()
             player.decreaseImmunity();
-            coronas[i].width = 0
-            coronas[i].height = 0
+            coronas[i].speed = 0;
+            coronas[i].x = 0;
+            coronas[i].height = 0;
+            if (player.immunity === 1) {
+                myGameArea.warningSound.play()
+            }
             if (player.immunity <= 0) {
                 setTimeout(function () {
                     myGameArea.stop()
@@ -296,17 +299,17 @@ const playMusic = document.querySelector('#play-music')
 playMusic.addEventListener('click', function () {
     let musicIconSrc = document.querySelector('#play-icon').src
     if (musicIconSrc.includes(`play-music`)) {
-        backGroundSound.play()
+        backGroundMusic.play()
         playMusic.innerHTML = `<img id='play-icon' src="./images/stop-music.png" alt="play music icon">`
     } else if (musicIconSrc.includes(`stop-music`)) {
-        backGroundSound.stop()
+        backGroundMusic.stop()
         playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
     }
 })
 
 startButton.addEventListener('click', function () {
     h1.classList.toggle('shake')
-    instructions.innerHTML = ``
+    instructions.style.display = 'none'
     playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
     player = new Player()
     myGameArea.start()
