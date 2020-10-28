@@ -33,16 +33,6 @@ const myGameArea = {
     //score function
 }
 
-function updateGameScreen() {
-    myGameArea.clear(); //clears the canvas to print new graphic
-    player.newPosition(); //places player on new coordinates
-    player.update(); //puts canvas of player on screen
-    //drawVirus(); //will create new virus obstacles
-    //checkGameOver(); // immunity=0
-    updateScoreScreen(player);
-    updateImmunityScreen(player);
-    updateSanitizers()
-}
 
 function updateScoreScreen(player) {
     ctx.font = "20px Creepster";
@@ -188,9 +178,9 @@ class Sanitizer {
 
     crashWith(object) {
         if (
-            this.top() === object.bottom() &&
-            ((this.left() >= object.left() && this.left() < object.right()) ||
-                (this.right() >= object.left() && this.right() < object.right())
+            this.top() === (object.y + object.speed) &&
+            ((this.left() >= (object.x + object.radius) && this.left() < (object.x + object.radius)) ||
+                (this.right() >= (object.x + object.radius) && this.right() < (object.x + object.radius))
             )
         ) {
             return true
@@ -213,28 +203,17 @@ document.addEventListener('keydown', function (e) {
     }
 })
 
-// const sanitized = allSanitizers.some(function (object) {
-//     return sanitizer.crashWith(object)
-// })
-
 function checkIfSanitized() {
-    for (let i = 0; i < coronas.length; i++) {
-        for (let j = 0; i < allSanitizers.length; j++) {
-            if (allSanitizers[j].crashWith(coronas[j])) {
+    for (let i = 0; i < allSanitizers.length; i++) {
+        for (let j = 0; j < coronas.length; j++) {
+            if (allSanitizers[i].crashWith(coronas[j])) {
                 myGameArea.cleanSound.play()
                 player.increaseScore(5)
-                coronas[i].speedY = 0
-                coronas[i].width = 0
-                coronas[i].height = 0
+                coronas[j].speed = 0
+                coronas[j].x = 0
+                coronas[j].radius = 0
             }
         }
-        // if (sanitized(coronas[i])) {
-        //     myGameArea.cleanSound.play()
-        //     player.increaseScore(5)
-        //     coronas[i].speedY = 0
-        //     coronas[i].width = 0
-        //     coronas[i].height = 0
-        // }
     }
 }
 
@@ -287,8 +266,6 @@ function updateCoronas() {
     }
 }
 
-
-//START BUTTON
 const startButton = document.getElementById('start-button')
 
 startButton.addEventListener('click', function () {
