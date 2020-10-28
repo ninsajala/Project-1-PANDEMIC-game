@@ -15,12 +15,14 @@ const myGameArea = {
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
         this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`)
-        this.
+        this.fallSound = new Sound(`../sound-effects/fall-effect.mp3`)
+        this.backGroundSound = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
         updateScoreScreen(player)
         updateImmunityScreen(player)
     },
 
     clear: function () {
+        //this.backGroundSound.play()
         let img = new Image()
         img.src = '../images/background-option.jpeg'
         ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
@@ -243,18 +245,6 @@ function updateSanitizers() {
     }
 }
 
-// function updateGameScreen() {
-//     myGameArea.clear(); //clears the canvas to print new graphic
-//     player.newPosition(); //places player on new coordinates
-//     player.update(); //puts canvas of player on screen
-//     //checkGameOver(); // immunity=0
-//     updateScoreScreen(player);
-//     updateImmunityScreen(player);
-//     updateSanitizers();
-//     updateCoronas()
-//     checkIfSanitized()
-// }
-
 const coronas = [];
 
 function updateCoronas() {
@@ -268,6 +258,7 @@ function updateCoronas() {
 
     myGameArea.frameNo += 1
     if (myGameArea.frameNo % 120 === 0) {
+        // smyGameArea.fallSound.play()
         let x = Math.floor(Math.random() * 500);
         let speed = Math.floor(Math.random() * 5);
         let radius = 10 * Math.PI;
@@ -282,13 +273,11 @@ function updateCoronas() {
 }
 
 const startButton = document.getElementById('start-button')
+const instructions = document.querySelector('.instructions')
 
 startButton.addEventListener('click', function () {
-    startButton.innerHTML = 'Restart'
+    instructions.innerHTML = ''
     player = new Player()
     myGameArea.start()
-})
 
-//To do:
-//Write game over function that checks if immunity is 0 and stops interval if true
-//Player crash with corona function --> call decrease immunity
+})
