@@ -37,10 +37,9 @@ const myGameArea = {
 }
 
 function updateGameScreen() {
-    myGameArea.clear(); //clears the canvas to print new graphic
-    player.newPosition(); //places player on new coordinates
-    player.update(); //puts canvas of player on screen
-    //checkGameOver(); // immunity=0
+    myGameArea.clear();
+    player.newPosition();
+    player.update();
     updateScoreScreen(player);
     updateImmunityScreen(player);
     updateSanitizers()
@@ -103,21 +102,11 @@ class Player {
     right() {
         return this.x + this.width
     }
-    top() {
-        return this.y
-    }
-    bottom() {
-        return this.y + this.height
-    }
 
     crashWith(object) {
-        //        console.log(this.top() + " " + object.y + " " + this.left() + " " + object.x + " " + this.right());
-        if (object.y >= (500 - 60)) {
-            // carona is at the bottom of the screen
-            //console.log("corona xy " + object.x + " " + object.y);
+        if (this.y === object.y + 60) {
             if ((this.left() >= object.x && this.left() < (object.x + 60)) ||
                 (this.right() >= object.x && this.right() < (object.x + 60))) {
-                //console.log("crash detected");
                 return true;
             }
         }
@@ -145,8 +134,8 @@ class Player {
         return this.immunity;
     }
 
-    increaseScore(speed) {
-        return this.score += speed
+    increaseScore(number) {
+        return this.score += number
     }
 }
 
@@ -190,20 +179,15 @@ class Sanitizer {
     right() {
         return this.x + this.width
     }
-    top() {
-        return this.y
-    }
-    bottom() {
-        return this.y + this.height
-    }
 
     crashWith(object) {
-        if (this.top() === (object.speed + 60) &&
-            ((this.left() >= object.x && this.left() < (object.x + 60) ||
-                (this.right() >= object.x && this.right() < (object.x + 60))
-            ))) {
-            return true
+        if (this.y === object.y) {
+            if ((this.left() >= (object.x - 50) && this.left() < (object.x + 100)) ||
+                (this.right() >= (object.x - 50) && this.right() < (object.x + 100))) {
+                return true;
+            }
         }
+        return false;
     }
 }
 
@@ -226,6 +210,8 @@ function anyCollisions() {
     for (i = 0; i < coronas.length; i++) {
         if (player.crashWith(coronas[i])) {
             player.decreaseImmunity();
+            coronas[i].width = 0
+            coronas[i].height = 0
             if (player.immunity <= 0) {
                 myGameArea.stop();
                 break;
@@ -242,7 +228,7 @@ function checkIfSanitized() {
                 player.increaseScore(5)
                 coronas[j].speed = 0
                 coronas[j].x = 0
-                coronas[j].radius = 0
+                coronas[j].height = 0
             }
         }
     }
@@ -290,7 +276,6 @@ function updateCoronas() {
             x: x,
             y: -60,
             speed: speed,
-
         })
 
     }
