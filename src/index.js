@@ -28,10 +28,11 @@ const myGameArea = {
         ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
     },
     stop: function () {
+        console.log("stopping game")
         clearInterval(this.interval);
     }
 
-   
+
     //score function
 }
 
@@ -110,12 +111,17 @@ class Player {
     }
 
     crashWith(object) {
-        if (this.top() === (object.speed + 60) &&
-            ((this.left() >= object.x && this.left() < (object.x + 60) ||
-                (this.right() >= object.x && this.right() < (object.x + 60))
-            ))) {
-            return true
+        //        console.log(this.top() + " " + object.y + " " + this.left() + " " + object.x + " " + this.right());
+        if (object.y >= (500 - 60)) {
+            // carona is at the bottom of the screen
+            //console.log("corona xy " + object.x + " " + object.y);
+            if ((this.left() >= object.x && this.left() < (object.x + 60)) ||
+                (this.right() >= object.x && this.right() < (object.x + 60))) {
+                //console.log("crash detected");
+                return true;
+            }
         }
+        return false;
     }
 
     movePlayer(keyCode) {
@@ -133,7 +139,10 @@ class Player {
     }
 
     decreaseImmunity() {
-        return this.immunity -= 1
+        if (this.immunity > 0) {
+            this.immunity -= 1
+        }
+        return this.immunity;
     }
 
     increaseScore(speed) {
@@ -219,6 +228,7 @@ function anyCollisions() {
             player.decreaseImmunity();
             if (player.immunity <= 0) {
                 myGameArea.stop();
+                break;
             }
         }
     }
@@ -243,13 +253,13 @@ function updateSanitizers() {
         allSanitizers[i].newPosition()
         allSanitizers[i].update()
 
-        if(allSanitizers[i].y < -1){
-            allSanitizers.splice(i,1);
-             i--;
-   }
+        if (allSanitizers[i].y < -1) {
+            allSanitizers.splice(i, 1);
+            i--;
+        }
     }
-   }
- 
+}
+
 
 const coronas = [];
 
@@ -263,8 +273,8 @@ function updateCoronas() {
         img.src = `images/coronavirus.png`;
         ctx.drawImage(img, oneCorona.x, oneCorona.y, this.width, this.height)
 
-        if(oneCorona.y > 500){
-            coronas.splice(i,1);
+        if (oneCorona.y > 500) {
+            coronas.splice(i, 1);
             i--;
         }
     }
@@ -274,15 +284,15 @@ function updateCoronas() {
         // smyGameArea.fallSound.play()
         let x = Math.floor(Math.random() * 500);
         let speed = Math.floor(Math.random() * 5);
-        
+
 
         coronas.push({
             x: x,
             y: -60,
             speed: speed,
-           
+
         })
-      
+
     }
 }
 
