@@ -31,7 +31,7 @@ const myGameArea = {
         clearInterval(this.interval);
     }
 
-    //stop: function clearInterval
+   
     //score function
 }
 
@@ -242,8 +242,14 @@ function updateSanitizers() {
     for (let i = 0; i < allSanitizers.length; i++) {
         allSanitizers[i].newPosition()
         allSanitizers[i].update()
+
+        if(allSanitizers[i].y < -1){
+            allSanitizers.splice(i,1);
+             i--;
+   }
     }
-}
+   }
+ 
 
 const coronas = [];
 
@@ -251,9 +257,16 @@ function updateCoronas() {
     for (let i = 0; i < coronas.length; i++) {
         let oneCorona = coronas[i];
         oneCorona.y += 1;
-        let img = new Image()
-        img.src = `images/coronavirus.png`
-        ctx.drawImage(img, oneCorona.x, oneCorona.y, 60, 60)
+        this.width = 60;
+        this.height = 60;
+        let img = new Image();
+        img.src = `images/coronavirus.png`;
+        ctx.drawImage(img, oneCorona.x, oneCorona.y, this.width, this.height)
+
+        if(oneCorona.y > 500){
+            coronas.splice(i,1);
+            i--;
+        }
     }
 
     myGameArea.frameNo += 1
@@ -261,14 +274,15 @@ function updateCoronas() {
         // smyGameArea.fallSound.play()
         let x = Math.floor(Math.random() * 500);
         let speed = Math.floor(Math.random() * 5);
-        let radius = 10 * Math.PI;
+        
 
         coronas.push({
             x: x,
-            y: 0,
+            y: -60,
             speed: speed,
-            radius: radius
+           
         })
+      
     }
 }
 
