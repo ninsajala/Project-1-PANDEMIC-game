@@ -33,6 +33,18 @@ const myGameArea = {
     //score function
 }
 
+function updateGameScreen() {
+    myGameArea.clear(); //clears the canvas to print new graphic
+    player.newPosition(); //places player on new coordinates
+    player.update(); //puts canvas of player on screen
+    //checkGameOver(); // immunity=0
+    updateScoreScreen(player);
+    updateImmunityScreen(player);
+    updateSanitizers()
+    updateCoronas()
+    checkIfSanitized()
+    anyCollisions()
+}
 
 function updateScoreScreen(player) {
     ctx.font = "20px Creepster";
@@ -96,12 +108,10 @@ class Player {
     }
 
     crashWith(object) {
-        if (
-            this.top() === object.bottom() &&
-            ((this.left() >= object.left() && this.left() < object.right()) ||
-                (this.right() >= object.left() && this.right() < object.right())
-            )
-        ) {
+        if (this.top() === (object.speed + 60) &&
+            ((this.left() >= object.x && this.left() < (object.x + 60) ||
+                (this.right() >= object.x && this.right() < (object.x + 60))
+            ))) {
             return true
         }
     }
@@ -177,12 +187,10 @@ class Sanitizer {
     }
 
     crashWith(object) {
-        if (
-            this.top() === (object.y + object.speed) &&
-            ((this.left() >= (object.x + object.radius) && this.left() < (object.x + object.radius)) ||
-                (this.right() >= (object.x + object.radius) && this.right() < (object.x + object.radius))
-            )
-        ) {
+        if (this.top() === (object.speed + 60) &&
+            ((this.left() >= object.x && this.left() < (object.x + 60) ||
+                (this.right() >= object.x && this.right() < (object.x + 60))
+            ))) {
             return true
         }
     }
@@ -202,6 +210,17 @@ document.addEventListener('keydown', function (e) {
         newSanitizerSpray()
     }
 })
+
+function anyCollisions() {
+    for (i = 0; i < coronas.length; i++) {
+        if (player.crashWith(coronas[i])) {
+            player.decreaseImmunity();
+            if (player.immunity <= 0) {
+                myGameArea.stop();
+            }
+        }
+    }
+}
 
 function checkIfSanitized() {
     for (let i = 0; i < allSanitizers.length; i++) {
@@ -224,17 +243,17 @@ function updateSanitizers() {
     }
 }
 
-function updateGameScreen() {
-    myGameArea.clear(); //clears the canvas to print new graphic
-    player.newPosition(); //places player on new coordinates
-    player.update(); //puts canvas of player on screen
-    //checkGameOver(); // immunity=0
-    updateScoreScreen(player);
-    updateImmunityScreen(player);
-    updateSanitizers();
-    updateCoronas()
-    checkIfSanitized()
-}
+// function updateGameScreen() {
+//     myGameArea.clear(); //clears the canvas to print new graphic
+//     player.newPosition(); //places player on new coordinates
+//     player.update(); //puts canvas of player on screen
+//     //checkGameOver(); // immunity=0
+//     updateScoreScreen(player);
+//     updateImmunityScreen(player);
+//     updateSanitizers();
+//     updateCoronas()
+//     checkIfSanitized()
+// }
 
 const coronas = [];
 
@@ -242,13 +261,9 @@ function updateCoronas() {
     for (let i = 0; i < coronas.length; i++) {
         let oneCorona = coronas[i];
         oneCorona.y += 1;
-        // creating circles
-        ctx.beginPath();
-        // color the circles
-        ctx.fillStyle = "rgb(255,127,80)";
-        // drawing circle
-        ctx.arc(oneCorona.x, oneCorona.y += oneCorona.speed / 2, oneCorona.speed * 0.8, 0, oneCorona.radius);
-        ctx.fill();
+        let img = new Image()
+        img.src = `images/coronavirus.png`
+        ctx.drawImage(img, oneCorona.x, oneCorona.y, 60, 60)
     }
 
     myGameArea.frameNo += 1
