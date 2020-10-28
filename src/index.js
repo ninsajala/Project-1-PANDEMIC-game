@@ -41,6 +41,9 @@ function updateGameScreen() {
     updateScoreScreen(player);
     updateImmunityScreen(player);
     updateSanitizers()
+    updateCoronas()
+    checkIfSanitized()
+    anyCollisions()
 }
 
 function updateScoreScreen(player) {
@@ -105,12 +108,10 @@ class Player {
     }
 
     crashWith(object) {
-        if (
-            this.top() === object.bottom() &&
-            ((this.left() >= object.left() && this.left() < object.right()) ||
-                (this.right() >= object.left() && this.right() < object.right())
-            )
-        ) {
+        if (this.top() === (object.speed + 60) &&
+            ((this.left() >= object.x && this.left() < (object.x + 60) ||
+                (this.right() >= object.x && this.right() < (object.x + 60))
+            ))) {
             return true
         }
     }
@@ -186,12 +187,10 @@ class Sanitizer {
     }
 
     crashWith(object) {
-        if (
-            this.top() === object.bottom() &&
-            ((this.left() >= object.left() && this.left() < object.right()) ||
-                (this.right() >= object.left() && this.right() < object.right())
-            )
-        ) {
+        if (this.top() === (object.speed + 60) &&
+            ((this.left() >= object.x && this.left() < (object.x + 60) ||
+                (this.right() >= object.x && this.right() < (object.x + 60))
+            ))) {
             return true
         }
     }
@@ -212,28 +211,28 @@ document.addEventListener('keydown', function (e) {
     }
 })
 
-// const sanitized = allSanitizers.some(function (object) {
-//     return sanitizer.crashWith(object)
-// })
-
-function checkIfSanitized() {
-    for (let i = 0; i < coronas.length; i++) {
-        for (let j = 0; i < allSanitizers.length; j++) {
-            if (allSanitizers[j].crashWith(coronas[j])) {
-                myGameArea.cleanSound.play()
-                player.increaseScore(5)
-                coronas[i].speedY = 0
-                coronas[i].width = 0
-                coronas[i].height = 0
+function anyCollisions() {
+    for (i = 0; i < coronas.length; i++) {
+        if (player.crashWith(coronas[i])) {
+            player.decreaseImmunity();
+            if (player.immunity <= 0) {
+                myGameArea.stop();
             }
         }
-        // if (sanitized(coronas[i])) {
-        //     myGameArea.cleanSound.play()
-        //     player.increaseScore(5)
-        //     coronas[i].speedY = 0
-        //     coronas[i].width = 0
-        //     coronas[i].height = 0
-        // }
+    }
+}
+
+function checkIfSanitized() {
+    for (let i = 0; i < allSanitizers.length; i++) {
+        for (let j = 0; j < coronas.length; j++) {
+            if (allSanitizers[i].crashWith(coronas[j])) {
+                myGameArea.cleanSound.play()
+                player.increaseScore(5)
+                coronas[j].speed = 0
+                coronas[j].x = 0
+                coronas[j].radius = 0
+            }
+        }
     }
 }
 
@@ -244,17 +243,17 @@ function updateSanitizers() {
     }
 }
 
-function updateGameScreen() {
-    myGameArea.clear(); //clears the canvas to print new graphic
-    player.newPosition(); //places player on new coordinates
-    player.update(); //puts canvas of player on screen
-    //checkGameOver(); // immunity=0
-    updateScoreScreen(player);
-    updateImmunityScreen(player);
-    updateSanitizers();
-    updateCoronas()
-    checkIfSanitized()
-}
+// function updateGameScreen() {
+//     myGameArea.clear(); //clears the canvas to print new graphic
+//     player.newPosition(); //places player on new coordinates
+//     player.update(); //puts canvas of player on screen
+//     //checkGameOver(); // immunity=0
+//     updateScoreScreen(player);
+//     updateImmunityScreen(player);
+//     updateSanitizers();
+//     updateCoronas()
+//     checkIfSanitized()
+// }
 
 const coronas = [];
 
@@ -282,8 +281,6 @@ function updateCoronas() {
     }
 }
 
-
-//START BUTTON
 const startButton = document.getElementById('start-button')
 
 startButton.addEventListener('click', function () {
