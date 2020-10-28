@@ -1,3 +1,9 @@
+/* colors
+purple: #6475CF
+green: #42BF74
+red: #D03232 */
+
+
 * {
   /* box-sizing: border-box; */
 }
@@ -15,7 +21,7 @@ body {
 
 canvas {
   background-color: #fffff0;
-  border: 1px solid red;
+  border: 1px solid #6475CF;
 }
 
 p {
@@ -24,5 +30,5 @@ p {
 
 h1 {
   font-family: "creepster";
-  color: tomato;
+  color: #D03232; 
 }

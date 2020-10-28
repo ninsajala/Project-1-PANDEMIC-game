@@ -37,7 +37,6 @@ function updateGameScreen() {
     myGameArea.clear(); //clears the canvas to print new graphic
     player.newPosition(); //places player on new coordinates
     player.update(); //puts canvas of player on screen
-    //drawVirus(); //will create new virus obstacles
     //checkGameOver(); // immunity=0
     updateScoreScreen(player);
     updateImmunityScreen(player);
@@ -263,13 +262,9 @@ function updateCoronas() {
     for (let i = 0; i < coronas.length; i++) {
         let oneCorona = coronas[i];
         oneCorona.y += 1;
-        // creating circles
-        ctx.beginPath();
-        // color the circles
-        ctx.fillStyle = "rgb(255,127,80)";
-        // drawing circle
-        ctx.arc(oneCorona.x, oneCorona.y += oneCorona.speed / 2, oneCorona.speed * 0.8, 0, oneCorona.radius);
-        ctx.fill();
+        let img = new Image()
+        img.src = `images/coronavirus.png`
+        ctx.drawImage(img, oneCorona.x, oneCorona.y, 60, 60)
     }
 
     myGameArea.frameNo += 1
