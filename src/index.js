@@ -3,6 +3,14 @@ let name
 let canvas
 let ctx
 const gameBoard = document.getElementById('game-board')
+let startSound = new Sound(`../sound-effects/tun-tun-tunn-effect.mp3`)
+let backGroundSound = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
+
+window.addEventListener('load', event => {
+    setTimeout(function () {
+        startSound.play()
+    }, 2000)
+})
 
 const myGameArea = {
     canvas: document.createElement("canvas"),
@@ -15,8 +23,8 @@ const myGameArea = {
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3')
         this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`)
-        this.fallSound = new Sound(`../sound-effects/fall-effect.mp3`)
-        this.backGroundSound = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
+        this.fallSound = new Sound(`../sound-effects/fall-plop.mp3`)
+        this.screamSound = new Sound(`../sound-effects/scream-effect.mp3`)
         updateScoreScreen(player)
         updateImmunityScreen(player)
     },
@@ -28,11 +36,9 @@ const myGameArea = {
         ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
     },
     stop: function () {
-        console.log("stopping game")
+        backGroundSound.stop()
         clearInterval(this.interval);
     }
-
-
     //score function
 }
 
@@ -182,8 +188,8 @@ class Sanitizer {
 
     crashWith(object) {
         if (this.y === object.y) {
-            if ((this.left() >= (object.x - 50) && this.left() < (object.x + 100)) ||
-                (this.right() >= (object.x - 50) && this.right() < (object.x + 100))) {
+            if ((this.left() >= (object.x - 100) && this.left() < (object.x + 100)) ||
+                (this.right() >= (object.x - 100) && this.right() < (object.x + 100))) {
                 return true;
             }
         }
@@ -209,12 +215,14 @@ document.addEventListener('keydown', function (e) {
 function anyCollisions() {
     for (i = 0; i < coronas.length; i++) {
         if (player.crashWith(coronas[i])) {
+            myGameArea.screamSound.play()
             player.decreaseImmunity();
             coronas[i].width = 0
             coronas[i].height = 0
             if (player.immunity <= 0) {
-                myGameArea.stop();
-                break;
+                setTimeout(function () {
+                    myGameArea.stop()
+                }, 1000);
             }
         }
     }
@@ -246,7 +254,6 @@ function updateSanitizers() {
     }
 }
 
-
 const coronas = [];
 
 function updateCoronas() {
@@ -267,7 +274,7 @@ function updateCoronas() {
 
     myGameArea.frameNo += 1
     if (myGameArea.frameNo % 120 === 0) {
-        // smyGameArea.fallSound.play()
+        myGameArea.fallSound.play()
         let x = Math.floor(Math.random() * 500);
         let speed = Math.floor(Math.random() * 5);
 
@@ -283,10 +290,24 @@ function updateCoronas() {
 
 const startButton = document.getElementById('start-button')
 const instructions = document.querySelector('.instructions')
+const h1 = document.querySelector('h1')
+const playMusic = document.querySelector('#play-music')
+
+playMusic.addEventListener('click', function () {
+    let musicIconSrc = document.querySelector('#play-icon').src
+    if (musicIconSrc.includes(`play-music`)) {
+        backGroundSound.play()
+        playMusic.innerHTML = `<img id='play-icon' src="./images/stop-music.png" alt="play music icon">`
+    } else if (musicIconSrc.includes(`stop-music`)) {
+        backGroundSound.stop()
+        playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
+    }
+})
 
 startButton.addEventListener('click', function () {
-    instructions.innerHTML = ''
+    h1.classList.toggle('shake')
+    instructions.innerHTML = ``
+    playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
     player = new Player()
     myGameArea.start()
-
 })
