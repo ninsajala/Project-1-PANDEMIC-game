@@ -1,40 +1,95 @@
-* {
-  /* box-sizing: border-box; */
+body {
+  width: 100%;
+  max-height: 1000px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-image: url('../images/Pandemic-coverage.jpg');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
-body {
-  align-items: center;
-  background-color: #333;
-  color: #000000;
-  /* display: flex; */
-  flex-direction: column;
-  /* height: 100vh; */
-  justify-content: center;
+header {
+  margin-top: 1%;
+  text-align: center;
+  height: 130px;
+}
+
+h1 {
+  font-family: "creepster";
+  color: #D03232;
+  font-size: 100px;
+  text-shadow: 3px 3px #42BF74;
+}
+
+.content-wrapper {
   margin: 0;
+  padding: 0;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-intro {
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1%;
+  margin: 5%;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#start-button {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  background-image: url('../images/start.png');
+  background-size: cover;
+}
+
+#start-button:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.instructions {
+  color: #42BF74;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  text-shadow: 1px 2px #D03232;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.arrow-wrap {
+  background-color: #42BF74;
+  width: 130px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 3px solid #D03232;
 }
 
 canvas {
   background-color: #fffff0;
-  border: 1px solid red;
+  border: 3px solid black;
 }
 
-.centered {
-  background: url("../images/Pandemic-coverage.jpg");
-  background-size: cover;
-  text-align: left;
-  font-size: 40px;
-  padding: 200px;
-  margin-left: 5px;
-  width: 100px;
-  height: 100px;
-  font-family: "creepster";
-  color: tomato;
-  /* left: 0; */
-  /* position: absolute; */
-  top: 50%;
-  left: 50%;
+footer {
+  margin: 5%;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-p {
-  color: #555;
+footer a {
+  color: lightblue;
 }

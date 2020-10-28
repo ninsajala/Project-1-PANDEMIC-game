@@ -12,22 +12,34 @@
     </head>
 
     <body>
-        <div class=" game-intro">
+        <header>
             <h1>PANDEMIC</h1>
-            <img src="images/Pandemic-coverage.jpg" alt="" class="covarage-img" width="500" height="500" />
-            <br />
-            <button id="start-button">StartGame</button>
-            <p>Use the left and right arrow to shoot the handsanitizer dispenser and eliminate the coronavirus!</p>
-            <img src="images/arrows.png" alt="" class="arrows-img" width="100" height="100" />
+        </header>
+        <div class="content-wrapper">
+            <div class=" game-intro">
+
+                <button id="start-button"></button>
+                <div class="instructions">
+                    <p>You are on a mission to save the world from the corona virus!</p>
+                    <p>Use the LEFT and RIGHT arrow to find the right position and use SPACE to shoot sanitizer and
+                        eliminate the virus!</p>
+                    <p>Be aware that the virus doesn't touch you cause this will decrease your
+                        immunity!</p>
+                    <div class="arrow-wrap">
+                        <img src="images/arrows.png" alt="" class="arrows-img" width="100" height="100" />
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-board">
+            </div>
         </div>
 
-        <div id="game-board">
-           
-            <!-- <canvas id="canvas" width="500" height="500"></canvas> -->
-        </div>
-
-
-
+        <footer>
+            <span>This page was coded by <a href="https://github.com/defSabe" target="_blank">Sabela</a>,
+                <a href="https://github.com/Sophietic" target="_blank">Sophie</a> and
+                <a href="https://github.com/ninsajala" target="_blank">Nina</a>
+            </span></footer>
         <script src="./src/index.js"></script>
     </body>
 
