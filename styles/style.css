@@ -91,8 +91,7 @@ h1 {
   border-radius: 10%;
 }
 
-.instructions p{
-}
+.instructions p {}
 
 .arrow-wrap {
   width: 130px;
@@ -110,7 +109,6 @@ footer {
   margin: 1%;
   color: white;
   font-family: 'Play', sans-serif;
-
 }
 
 footer a {
