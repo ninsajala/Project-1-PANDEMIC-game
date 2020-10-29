@@ -3,6 +3,7 @@ let player
 let name
 let canvas
 let ctx
+let startMusic = new Sound(`../sound-effects/dramatic-music.mp3`)
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
 
 //HTML SELECTORS
@@ -13,18 +14,26 @@ const h1 = document.querySelector('h1')
 const playMusic = document.querySelector('#play-music')
 
 //EVENT LISTENERS
+window.addEventListener('load', function () {
+    setTimeout(function () {
+        startMusic.play()
+    })
+})
+
 playMusic.addEventListener('click', function () {
     let musicIconSrc = document.querySelector('#play-icon').src
     if (musicIconSrc.includes(`play-music`)) {
-        backGroundMusic.play()
+        backGroundMusic.stop()
         playMusic.innerHTML = `<img id='play-icon' src="./images/stop-music.png" alt="play music icon">`
     } else if (musicIconSrc.includes(`stop-music`)) {
-        backGroundMusic.stop()
+        backGroundMusic.play()
         playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
     }
 })
 
 startButton.addEventListener('click', function () {
+    startMusic.stop()
+    backGroundMusic.play()
     h1.classList.toggle('shake')
     instructions.style.display = 'none'
     playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
@@ -236,9 +245,9 @@ class Sanitizer {
     }
 
     crashWith(object) {
-        if (this.y === object.y) {
-            if ((this.left() >= (object.x - 100) && this.left() < (object.x + 100)) ||
-                (this.right() >= (object.x - 100) && this.right() < (object.x + 100))) {
+        if (this.y === object.y + 60) {
+            if ((this.left() >= object.x && this.left() <= object.x + 60) ||
+                (this.right() >= object.x && this.right() <= object.x + 60)) {
                 return true;
             }
         }
@@ -260,13 +269,15 @@ function updateCoronas() {
             coronas.splice(i, 1);
             i--;
         }
+        break;
     }
 
     myGameArea.frameNo += 1
     if (myGameArea.frameNo % 120 === 0) {
         myGameArea.fallSound.play()
         let x = Math.floor(Math.random() * 500);
-        let speed = Math.floor(Math.random() * 5);
+        let speed = 5;
+        //Math.floor(Math.random() * 5)
 
 
         coronas.push({
@@ -303,9 +314,7 @@ function anyCollisions() {
         if (player.crashWith(coronas[i])) {
             myGameArea.screamSound.play()
             player.decreaseImmunity();
-            coronas[i].speed = 0;
-            coronas[i].x = 0;
-            coronas[i].height = 0;
+            coronas.splice(i, 1);
             if (player.immunity === 1) {
                 myGameArea.warningSound.play()
             }
@@ -322,12 +331,12 @@ function anyCollisions() {
 function checkIfSanitized() {
     for (let i = 0; i < allSanitizers.length; i++) {
         for (let j = 0; j < coronas.length; j++) {
+            //console.log(coronas[j].y, allSanitizers[i].y);
             if (allSanitizers[i].crashWith(coronas[j])) {
-                myGameArea.cleanSound.play()
-                player.increaseScore(5)
-                coronas[j].speed = 0
-                coronas[j].x = 0
-                coronas[j].height = 0
+                alert(`crashed`)
+                myGameArea.cleanSound.play();
+                player.increaseScore(5);
+                coronas.splice(j, 1);
             }
         }
     }
