@@ -277,11 +277,7 @@ function updateCoronas() {
     if (myGameArea.frameNo % 120 === 0) {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 440) + 30;
-<<<<<<< HEAD
-       let speed = Math.floor(Math.random() * 5);
-=======
         let speed = Math.floor(Math.random() * 5);
->>>>>>> 664e16f8a8987bcd4bc1148fbc85740f0421c719
 
         coronas.push({
             x: x,
