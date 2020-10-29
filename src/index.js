@@ -1,6 +1,5 @@
 let player, name, canvas, ctx
 let highscore = 0
-let startMusic = new Sound(`../sound-effects/dramatic-music.mp3`)
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
 
 //HTML SELECTORS
@@ -11,12 +10,6 @@ const h1 = document.querySelector('h1');
 const playMusic = document.querySelector('#play-music');
 
 //EVENT LISTENERS
-window.addEventListener('load', function () {
-    setTimeout(function () {
-        startMusic.play();
-    });
-});
-
 playMusic.addEventListener('click', function () {
     let musicIconSrc = document.querySelector('#play-icon').src;
     if (musicIconSrc.includes(`play-music`)) {
@@ -29,14 +22,13 @@ playMusic.addEventListener('click', function () {
 });
 
 startButton.addEventListener('click', function () {
-    startMusic.stop();
     backGroundMusic.play();
     h1.classList.toggle('shake');
     instructions.style.display = 'none'
     playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
     player = new Player();
     myGameArea.start();
-});
+})
 
 document.addEventListener('keydown', function (e) {
     player.movePlayer(e.keyCode);
@@ -66,7 +58,7 @@ const myGameArea = {
         this.canvas.width = 500;
         this.canvas.height = 500;
         ctx = this.canvas.getContext("2d");
-        gameBoard.appendChild(this.canvas)
+        gameBoard.appendChild(this.canvas);
         this.interval = setInterval(updateGameScreen, 20);
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3');
@@ -254,19 +246,12 @@ class Sanitizer {
         ctx.drawImage(img, this.x, this.y, this.width, this.height);
     }
 
-    left() {
-        return this.x;
-    }
-    right() {
-        return this.x + this.width;
-    }
-
     crashWith(object) {
-        if (this.y === object.y + 60) {
-            if ((this.left() >= object.x && this.left() <= object.x + 60) ||
-                (this.right() >= object.x && this.right() <= object.x + 60)) {
-                return true;
-            }
+        if (this.x + this.width >= object.x &&
+            this.x <= object.x + 60 &&
+            this.y + this.height >= object.y &&
+            this.y <= object.y + 60) {
+            return true
         }
         return false;
     }
@@ -286,13 +271,12 @@ function updateCoronas() {
             coronas.splice(i, 1);
             i--;
         }
-        break;
     }
 
     myGameArea.frameNo += 1;
     if (myGameArea.frameNo % 120 === 0) {
         myGameArea.fallSound.play();
-        let x = Math.floor(Math.random() * 500);
+        let x = Math.floor(Math.random() * 440) + 30;
         let speed = Math.floor(Math.random() * 5);
 
         coronas.push({
