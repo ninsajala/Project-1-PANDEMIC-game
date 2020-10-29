@@ -69,10 +69,19 @@ h1 {
   background-image: url('../images/start.png');
   background-size: cover;
   margin-bottom: 20px;
-
 }
 
-#start-button:hover {
+#restart-button {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-image: url('../images/restart-button.png');
+  background-size: cover;
+  z-index: 1;
+}
+
+#start-button:hover,
+#restart-button:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
@@ -90,8 +99,6 @@ h1 {
   border: 1px solid #D03232;
   border-radius: 10%;
 }
-
-.instructions p {}
 
 .arrow-wrap {
   width: 130px;

@@ -1,7 +1,4 @@
-let player
-let name
-let canvas
-let ctx
+let player, name, canvas, ctx
 let startMusic = new Sound(`../sound-effects/dramatic-music.mp3`)
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
 
@@ -132,6 +129,20 @@ function gameOver() {
     ctx.fillText(`YOU LOSt FROM THE VIRUS`, 80, 150);
     ctx.fillText(`YOU ARE GOING IN`, 120, 200);
     ctx.fillText(`QUARANTINE`, 170, 300);
+    restartButton()
+}
+
+function restartButton() {
+    let restartButton = document.querySelector(`.restart`)
+    restartButton.innerHTML = `<button id="restart-button"></button>`;
+    restartButton.addEventListener('click', function () {
+        coronas = []
+        allSanitizers = []
+        myGameArea.clear()
+        player = new Player()
+        myGameArea.start()
+        restartButton.innerHTML = ``
+    })
 }
 
 //SOUND FUNCTION
@@ -274,7 +285,7 @@ function updateCoronas() {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 500);
         let speed = 5;
-       // let speed = Math.floor(Math.random() * 5);
+        // let speed = Math.floor(Math.random() * 5);
 
         coronas.push({
             x: x,
@@ -285,8 +296,8 @@ function updateCoronas() {
     }
 }
 
-const coronas = [];
-const allSanitizers = [];
+let coronas = [];
+let allSanitizers = [];
 
 function newSanitizerSpray() {
     myGameArea.spraySound.play();
