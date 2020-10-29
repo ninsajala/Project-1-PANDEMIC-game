@@ -211,7 +211,9 @@ class Player {
     }
 
     decreaseImmunity() {
-        return this.immunity -= 1;
+        if (this.immunity > 0) {
+            return this.immunity -= 1;
+        }
     }
 
     increaseScore(coronaSpeed) {
@@ -284,7 +286,6 @@ function newSanitizerSpray() {
     myGameArea.spraySound.play();
     let sanitizer = new Sanitizer(player.x);
     allSanitizers.push(sanitizer);
-    totalSanitizers++
 }
 
 function updateSanitizers() {
@@ -312,7 +313,7 @@ function anyCollisions() {
                     highScore = player.score
                 }
                 myGameArea.gameOverSound.play();
-                myGameArea.stop();
+                setTimeout(myGameArea.stop(), 500);
             }
         }
     }
