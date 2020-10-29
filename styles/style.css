@@ -61,6 +61,14 @@ h1 {
   text-align: center;
 }
 
+.arrows-img {
+  width: 100px;
+}
+
+.space-img {
+  height: 25px;
+}
+
 #start-button {
   height: 70px;
   width: 70px;
@@ -68,9 +76,22 @@ h1 {
   background-image: url("../images/start.png");
   background-size: cover;
   margin-bottom: 20px;
+<<<<<<< HEAD
+=======
 }
 
-#start-button:hover {
+#restart-button {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-image: url('../images/restart-button.png');
+  background-size: cover;
+  z-index: 1;
+>>>>>>> 664e16f8a8987bcd4bc1148fbc85740f0421c719
+}
+
+#start-button:hover,
+#restart-button:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
@@ -89,9 +110,12 @@ h1 {
   border-radius: 10%;
 }
 
+<<<<<<< HEAD
 .instructions p {
 }
 
+=======
+>>>>>>> 664e16f8a8987bcd4bc1148fbc85740f0421c719
 .arrow-wrap {
   width: 130px;
   padding: 5px;
