@@ -1,13 +1,25 @@
 let player, canvas, ctx;
-let highscore = 0;
+let highScore = 0;
 let coronas = [];
 let allSanitizers = [];
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
-const gameBoard = document.getElementById('game-board');
 const startButton = document.getElementById('start-button');
-const instructions = document.querySelector('.instructions');
-const h1 = document.querySelector('h1');
+
+startButton.addEventListener('click', function () {
+    const instructions = document.querySelector('.instructions');
+    instructions.style.display = 'none';
+
+    const h1 = document.querySelector('h1');
+    h1.classList.toggle('shake');
+
+    backGroundMusic.play();
+    playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`;
+
+    player = new Player();
+    myGameArea.start();
+});
+
 const playMusic = document.querySelector('#play-music');
 
 playMusic.addEventListener('click', function () {
@@ -19,15 +31,6 @@ playMusic.addEventListener('click', function () {
         backGroundMusic.play();
         playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`;
     }
-});
-
-startButton.addEventListener('click', function () {
-    backGroundMusic.play();
-    h1.classList.toggle('shake');
-    instructions.style.display = 'none';
-    playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`;
-    player = new Player();
-    myGameArea.start();
 });
 
 document.addEventListener('keydown', function (e) {
@@ -50,6 +53,8 @@ document.addEventListener('keydown', function (e) {
         newSanitizerSpray();
     }
 });
+
+const gameBoard = document.getElementById('game-board');
 
 const myGameArea = {
     canvas: document.createElement("canvas"),
@@ -118,7 +123,7 @@ function icWarning() {
 function gameOver() {
     ctx.font = "40px Creepster";
     ctx.fillStyle = "Black";
-    ctx.fillText(`YOU LOSt FROM THE VIRUS`, 80, 150);
+    ctx.fillText(`YOU LOST FROM THE VIRUS`, 80, 150);
     ctx.fillText(`YOU ARE GOING IN`, 120, 200);
     ctx.fillText(`QUARANTINE`, 170, 300);
     restartButton();
@@ -127,14 +132,15 @@ function gameOver() {
 function showHighScore() {
     ctx.font = "20px Creepster";
     ctx.fillStyle = "#D03232";
-    ctx.fillText(`Highscore: ${highscore}`, 5, 20);
+    ctx.fillText(`Highscore: ${highScore}`, 5, 20);
 }
 
 
 function restartButton() {
     let restartButton = document.querySelector(`.restart`);
     restartButton.innerHTML = `<button id="restart-button"></button>`;
-    restartButton.addEventListener('click', function () {
+    restartButton.addEventListener('click', function (event) {
+        event.preventDefault()
         coronas = [];
         allSanitizers = [];
         myGameArea.clear();
@@ -208,8 +214,8 @@ class Player {
         return this.immunity -= 1;
     }
 
-    increaseScore(number) {
-        return this.score += number;
+    increaseScore(coronaSpeed) {
+        return this.score += coronaSpeed;
     }
 }
 
@@ -278,6 +284,7 @@ function newSanitizerSpray() {
     myGameArea.spraySound.play();
     let sanitizer = new Sanitizer(player.x);
     allSanitizers.push(sanitizer);
+    totalSanitizers++
 }
 
 function updateSanitizers() {
@@ -300,14 +307,12 @@ function anyCollisions() {
             if (player.immunity === 1) {
                 myGameArea.warningSound.play();
             }
-            if (player.immunity <= 0) {
-                if (highscore < player.score) {
-                    highscore = player.score
+            if (player.immunity === 0) {
+                if (highScore < player.score) {
+                    highScore = player.score
                 }
                 myGameArea.gameOverSound.play();
-                setTimeout(function () {
-                    myGameArea.stop();
-                }, 500);
+                myGameArea.stop();
             }
         }
     }
@@ -320,7 +325,6 @@ function checkIfSanitized() {
                 myGameArea.cleanSound.play();
                 coronas.splice(j, 1);
                 allSanitizers.splice(i, 1);
-                myGameArea.cleanSound.play();
                 player.increaseScore(coronas[i].speed);
             }
         }
