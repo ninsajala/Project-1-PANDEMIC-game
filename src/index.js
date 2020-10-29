@@ -1,15 +1,15 @@
-let player, name, canvas, ctx
-let highscore = 0
-let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
+let player, canvas, ctx;
+let highscore = 0;
+let coronas = [];
+let allSanitizers = [];
+let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
-//HTML SELECTORS
 const gameBoard = document.getElementById('game-board');
 const startButton = document.getElementById('start-button');
 const instructions = document.querySelector('.instructions');
 const h1 = document.querySelector('h1');
 const playMusic = document.querySelector('#play-music');
 
-//EVENT LISTENERS
 playMusic.addEventListener('click', function () {
     let musicIconSrc = document.querySelector('#play-icon').src;
     if (musicIconSrc.includes(`play-music`)) {
@@ -18,17 +18,17 @@ playMusic.addEventListener('click', function () {
     } else if (musicIconSrc.includes(`stop-music`)) {
         backGroundMusic.play();
         playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`;
-    };
+    }
 });
 
 startButton.addEventListener('click', function () {
     backGroundMusic.play();
     h1.classList.toggle('shake');
-    instructions.style.display = 'none'
-    playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
+    instructions.style.display = 'none';
+    playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`;
     player = new Player();
     myGameArea.start();
-})
+});
 
 document.addEventListener('keydown', function (e) {
     player.movePlayer(e.keyCode);
@@ -41,17 +41,16 @@ document.addEventListener('keyup', (e) => {
             break;
         case 37:
             return player.speedX = 0;
-    };
+    }
 });
 
 document.addEventListener('keydown', function (e) {
     e.preventDefault();
     if (e.keyCode === 32) {
         newSanitizerSpray();
-    };
+    }
 });
 
-//GAME AREA
 const myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
@@ -96,7 +95,6 @@ function updateGameScreen() {
     showHighScore()
 }
 
-//CANVAS SCREEN FUNCTIONS
 function updateScoreScreen(player) {
     ctx.font = "20px Creepster";
     ctx.fillStyle = "#D03232";
@@ -123,7 +121,7 @@ function gameOver() {
     ctx.fillText(`YOU LOSt FROM THE VIRUS`, 80, 150);
     ctx.fillText(`YOU ARE GOING IN`, 120, 200);
     ctx.fillText(`QUARANTINE`, 170, 300);
-    restartButton()
+    restartButton();
 }
 
 function showHighScore() {
@@ -134,19 +132,18 @@ function showHighScore() {
 
 
 function restartButton() {
-    let restartButton = document.querySelector(`.restart`)
+    let restartButton = document.querySelector(`.restart`);
     restartButton.innerHTML = `<button id="restart-button"></button>`;
     restartButton.addEventListener('click', function () {
-        coronas = []
-        allSanitizers = []
-        myGameArea.clear()
-        player = new Player()
-        myGameArea.start()
-        restartButton.innerHTML = ``
-    })
+        coronas = [];
+        allSanitizers = [];
+        myGameArea.clear();
+        player = new Player();
+        myGameArea.start();
+        restartButton.innerHTML = ``;
+    });
 }
 
-//SOUND FUNCTION
 function Sound(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
@@ -162,7 +159,6 @@ function Sound(src) {
     }
 }
 
-//GAME COMPONENTS
 class Player {
     constructor() {
         this.x = 240;
@@ -184,17 +180,10 @@ class Player {
         ctx.drawImage(img, this.x, this.y, this.width, this.height);
     }
 
-    left() {
-        return this.x;
-    }
-    right() {
-        return this.x + this.width;
-    }
-
     crashWith(object) {
         if (this.y === object.y + 60) {
-            if ((this.left() >= object.x && this.left() < (object.x + 60)) ||
-                (this.right() >= object.x && this.right() < (object.x + 60))) {
+            if ((this.x >= object.x && this.x < (object.x + 60)) ||
+                ((this.x + this.width) >= object.x && (this.x + this.width) < (object.x + 60))) {
                 return true;
             }
         }
@@ -206,7 +195,7 @@ class Player {
             case 39:
                 if (this.x <= 470) {
                     return this.speedX += 4;
-                };
+                }
                 break;
             case 37:
                 if (this.x >= 5) {
@@ -216,10 +205,7 @@ class Player {
     }
 
     decreaseImmunity() {
-        if (this.immunity > 0) {
-            this.immunity -= 1;
-        }
-        return this.immunity;
+        return this.immunity -= 1;
     }
 
     increaseScore(number) {
@@ -287,9 +273,6 @@ function updateCoronas() {
 
     }
 }
-
-let coronas = [];
-let allSanitizers = [];
 
 function newSanitizerSpray() {
     myGameArea.spraySound.play();
