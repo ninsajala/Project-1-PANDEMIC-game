@@ -1,4 +1,5 @@
 let player, name, canvas, ctx
+let highscore = 0
 let startMusic = new Sound(`../sound-effects/dramatic-music.mp3`)
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
 
@@ -12,34 +13,34 @@ const playMusic = document.querySelector('#play-music');
 //EVENT LISTENERS
 window.addEventListener('load', function () {
     setTimeout(function () {
-        startMusic.play()
-    })
-})
+        startMusic.play();
+    });
+});
 
 playMusic.addEventListener('click', function () {
     let musicIconSrc = document.querySelector('#play-icon').src;
     if (musicIconSrc.includes(`play-music`)) {
-        backGroundMusic.stop()
-        playMusic.innerHTML = `<img id='play-icon' src="./images/stop-music.png" alt="play music icon">`
+        backGroundMusic.stop();
+        playMusic.innerHTML = `<img id='play-icon' src="./images/stop-music.png" alt="play music icon">`;
     } else if (musicIconSrc.includes(`stop-music`)) {
-        backGroundMusic.play()
-        playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
-    }
-})
+        backGroundMusic.play();
+        playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`;
+    };
+});
 
 startButton.addEventListener('click', function () {
-    startMusic.stop()
-    backGroundMusic.play()
-    h1.classList.toggle('shake')
+    startMusic.stop();
+    backGroundMusic.play();
+    h1.classList.toggle('shake');
     instructions.style.display = 'none'
     playMusic.innerHTML = `<img id='play-icon' src="./images/play-music.png" alt="play music icon">`
-    player = new Player()
-    myGameArea.start()
-})
+    player = new Player();
+    myGameArea.start();
+});
 
 document.addEventListener('keydown', function (e) {
     player.movePlayer(e.keyCode);
-})
+});
 
 document.addEventListener('keyup', (e) => {
     switch (e.keyCode) {
@@ -48,15 +49,15 @@ document.addEventListener('keyup', (e) => {
             break;
         case 37:
             return player.speedX = 0;
-    }
-})
+    };
+});
 
 document.addEventListener('keydown', function (e) {
-    e.preventDefault()
+    e.preventDefault();
     if (e.keyCode === 32) {
         newSanitizerSpray();
-    }
-})
+    };
+});
 
 //GAME AREA
 const myGameArea = {
@@ -100,6 +101,7 @@ function updateGameScreen() {
     checkIfSanitized();
     anyCollisions();
     icWarning();
+    showHighScore()
 }
 
 //CANVAS SCREEN FUNCTIONS
@@ -131,6 +133,13 @@ function gameOver() {
     ctx.fillText(`QUARANTINE`, 170, 300);
     restartButton()
 }
+
+function showHighScore() {
+    ctx.font = "20px Creepster";
+    ctx.fillStyle = "#D03232";
+    ctx.fillText(`Highscore: ${highscore}`, 5, 20);
+}
+
 
 function restartButton() {
     let restartButton = document.querySelector(`.restart`)
@@ -284,8 +293,7 @@ function updateCoronas() {
     if (myGameArea.frameNo % 120 === 0) {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 500);
-        let speed = 5;
-        // let speed = Math.floor(Math.random() * 5);
+        let speed = Math.floor(Math.random() * 5);
 
         coronas.push({
             x: x,
@@ -326,6 +334,9 @@ function anyCollisions() {
                 myGameArea.warningSound.play();
             }
             if (player.immunity <= 0) {
+                if (highscore < player.score) {
+                    highscore = player.score
+                }
                 myGameArea.gameOverSound.play();
                 setTimeout(function () {
                     myGameArea.stop();
@@ -338,14 +349,11 @@ function anyCollisions() {
 function checkIfSanitized() {
     for (let i = 0; i < allSanitizers.length; i++) {
         for (let j = 0; j < coronas.length; j++) {
-            //console.log(coronas[j].y, allSanitizers[i].y);
             if (allSanitizers[i].crashWith(coronas[j])) {
-                //alert(`crashed`)
                 myGameArea.cleanSound.play();
-                player.increaseScore(5);
                 coronas.splice(j, 1);
                 myGameArea.cleanSound.play();
-                player.increaseScore(5);
+                player.increaseScore(coronas[i].speed);
             }
         }
     }
