@@ -277,7 +277,7 @@ function updateCoronas() {
     if (myGameArea.frameNo % 120 === 0) {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 440) + 30;
-        let speed = Math.floor(Math.random() * 5);
+        let speed = Math.ceil(Math.random() * 5);
 
         coronas.push({
             x: x,
@@ -336,6 +336,7 @@ function checkIfSanitized() {
             if (allSanitizers[i].crashWith(coronas[j])) {
                 myGameArea.cleanSound.play();
                 coronas.splice(j, 1);
+                allSanitizers.splice(i, 1);
                 myGameArea.cleanSound.play();
                 player.increaseScore(coronas[i].speed);
             }
