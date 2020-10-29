@@ -329,7 +329,7 @@ function anyCollisions() {
                 myGameArea.gameOverSound.play();
                 setTimeout(function () {
                     myGameArea.stop();
-                }, 1000);
+                }, 500);
             }
         }
     }
