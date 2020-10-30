@@ -1,3 +1,4 @@
+
 let player, canvas, ctx;
 let highscore = 0;
 let coronas = [];
