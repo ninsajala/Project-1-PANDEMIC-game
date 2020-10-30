@@ -4,11 +4,49 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <title>PANDEMIC</title>
     </head>
 
     <body>
+        <header>
+            <h1 class="shake">PANDEMIC</h1>
+        </header>
+        <div class="content-wrapper">
+            <div class=" game-intro">
+                <span id="play-music" title='Play Music'></span>
+                <span class="restart"></span>
+                <div class="instructions">
+                    <p>You are on a mission to save the world from the corona virus!</p>
+                    <p>Use the LEFT and RIGHT arrow to find the right position and use SPACE to shoot sanitizer and
+                        eliminate the virus!</p>
+                    <div class="arrow-wrap">
+                        <img src="images/arrow-keys.png" alt="arrow keys" class="arrows-img" />
+                    </div>
+                    <div class="space-wrap">
+                        <img src="images/icon_keyboard_spacebar..png" alt="space bar" class="space-img">
+                    </div>
+                    <p>Be aware that the virus doesn't touch you cause this will decrease your
+                        immunity!</p>
 
+                    <button id="start-button"></button>
+                </div>
+            </div>
+
+            <div id="game-board">
+            </div>
+        </div>
+
+        <footer>
+            <span>This page was coded by <a href="https://github.com/defSabe" target="_blank">Sabela</a>,
+                <a href="https://github.com/Sophietic" target="_blank">Sophie</a> and
+                <a href="https://github.com/ninsajala" target="_blank">Nina</a>
+            </span></footer>
+        <script src="./src/index.js"></script>
     </body>
 
 </html>
