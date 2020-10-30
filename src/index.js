@@ -5,6 +5,8 @@ let allSanitizers = [];
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
 const startButton = document.getElementById('start-button');
+const playMusic = document.querySelector('#play-music');
+const gameBoard = document.getElementById('game-board');
 
 startButton.addEventListener('click', function () {
     const instructions = document.querySelector('.instructions');
@@ -19,8 +21,6 @@ startButton.addEventListener('click', function () {
     player = new Player();
     myGameArea.start();
 });
-
-const playMusic = document.querySelector('#play-music');
 
 playMusic.addEventListener('click', function () {
     let musicIconSrc = document.querySelector('#play-icon').src;
@@ -54,16 +54,15 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-const gameBoard = document.getElementById('game-board');
-
 const myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
+        clearInterval(this.interval)
         this.canvas.width = 500;
         this.canvas.height = 500;
         ctx = this.canvas.getContext("2d");
         gameBoard.appendChild(this.canvas);
-        this.interval = setInterval(updateGameScreen, 20);
+        this.interval = setInterval(updateGameScreen, 20)
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3');
         this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`);
@@ -313,7 +312,9 @@ function anyCollisions() {
                     highScore = player.score
                 }
                 myGameArea.gameOverSound.play();
-                setTimeout(myGameArea.stop(), 500);
+                setTimeout(function () {
+                    myGameArea.stop()
+                }, 500);
             }
         }
     }
