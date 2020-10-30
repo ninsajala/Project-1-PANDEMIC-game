@@ -54,6 +54,7 @@ document.addEventListener('keydown', function (e) {
 const myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
+        clearInterval(this.interval);
         this.canvas.width = 500;
         this.canvas.height = 500;
         ctx = this.canvas.getContext("2d");
