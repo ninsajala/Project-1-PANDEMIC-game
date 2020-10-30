@@ -120,9 +120,9 @@ function icWarning() {
 function gameOver() {
     ctx.font = "40px Creepster";
     ctx.fillStyle = "Black";
-    ctx.fillText(`YOU LOSt FROM THE VIRUS`, 80, 150);
-    ctx.fillText(`YOU ARE GOING IN`, 120, 200);
-    ctx.fillText(`QUARANTINE`, 170, 300);
+    ctx.fillText(`YOU LOST AGAINST THE VIRUS`, 50, 150);
+    ctx.fillText(`YOU ARE GOING INTO`, 120, 200);
+    ctx.fillText(`QUARANTINE`, 160, 305);
     restartButton();
 }
 
