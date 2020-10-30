@@ -58,7 +58,7 @@ const myGameArea = {
         this.canvas.height = 500;
         ctx = this.canvas.getContext("2d");
         gameBoard.appendChild(this.canvas);
-        this.interval = setInterval(updateGameScreen, 20);
+        this.interval = setInterval(updateGameScreen, 10);
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3');
         this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`);
@@ -77,6 +77,7 @@ const myGameArea = {
     },
     stop: function () {
         clearInterval(this.interval);
+        console.log(myGameArea.start.this)
         gameOver();
     }
 }
@@ -96,14 +97,14 @@ function updateGameScreen() {
 }
 
 function updateScoreScreen(player) {
-    ctx.font = "20px Creepster";
-    ctx.fillStyle = "#D03232";
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
     ctx.fillText(`Score: ${player.score}`, 400, 20);
 }
 
 function updateImmunityScreen(player) {
     ctx.font = "20px Creepster";
-    ctx.fillStyle = "#D03232";
+    ctx.fillStyle = "white";
     ctx.fillText(`Immunity: ${player.immunity}`, 400, 50);
 }
 
@@ -125,8 +126,8 @@ function gameOver() {
 }
 
 function showHighScore() {
-    ctx.font = "20px Creepster";
-    ctx.fillStyle = "#D03232";
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
     ctx.fillText(`Highscore: ${highscore}`, 5, 20);
 }
 
@@ -260,15 +261,15 @@ function updateCoronas() {
     }
 
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo % 120 === 0) {
+    if (myGameArea.frameNo % 90 === 0) {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 440) + 30;
         let speed = Math.ceil(Math.random() * 5);
 
         coronas.push({
-            x: x,
+            x,
             y: -60,
-            speed: speed,
+            speed
         });
 
     }
