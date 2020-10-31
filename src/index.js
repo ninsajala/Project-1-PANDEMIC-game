@@ -2,6 +2,7 @@ let player, canvas, ctx;
 let highScore = 0;
 let coronas = [];
 let allSanitizers = [];
+let sanitizerCounter = 0
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
 const startButton = document.getElementById('start-button');
@@ -49,28 +50,29 @@ document.addEventListener('keyup', (e) => {
 
 document.addEventListener('keydown', function (e) {
     e.preventDefault();
-    if (e.keyCode === 32) {
-        newSanitizerSpray();
+    console.log(sanitizerCounter)
+    if (sanitizerCounter % 8 !== 0 || sanitizerCounter === 0) {
+        if (e.keyCode === 32) {
+            newSanitizerSpray();
+            sanitizerCounter++
+        }
+    } else {
+        alert('Refill sanitizer')
+        setTimeout(function () {
+            sanitizerCounter++, 8000
+        })
     }
 });
 
 const myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
-<<<<<<< HEAD
-        clearInterval(this.interval)
-=======
         clearInterval(this.interval);
->>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
         this.canvas.width = 500;
         this.canvas.height = 500;
         ctx = this.canvas.getContext("2d");
         gameBoard.appendChild(this.canvas);
-<<<<<<< HEAD
-        this.interval = setInterval(updateGameScreen, 20)
-=======
         this.interval = setInterval(updateGameScreen, 10);
->>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3');
         this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`);
@@ -131,30 +133,17 @@ function icWarning() {
 function gameOver() {
     ctx.font = "40px Creepster";
     ctx.fillStyle = "Black";
-<<<<<<< HEAD
-    ctx.fillText(`YOU LOST FROM THE VIRUS`, 80, 150);
-    ctx.fillText(`YOU ARE GOING IN`, 120, 200);
-    ctx.fillText(`QUARANTINE`, 170, 300);
-=======
     ctx.fillText(`YOU LOST AGAINST THE VIRUS`, 50, 150);
     ctx.fillText(`YOU ARE GOING INTO`, 120, 200);
     ctx.fillText(`QUARANTINE`, 160, 305);
->>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
     restartButton();
 }
 
 function showHighScore() {
-<<<<<<< HEAD
-    ctx.font = "20px Creepster";
-    ctx.fillStyle = "#D03232";
-    ctx.fillText(`Highscore: ${highScore}`, 5, 20);
-=======
     ctx.font = "20px Play";
     ctx.fillStyle = "white";
-    ctx.fillText(`Highscore: ${highscore}`, 5, 20);
->>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
+    ctx.fillText(`Highscore: ${highScore}`, 5, 20);
 }
-
 
 function restartButton() {
     let restartButton = document.querySelector(`.restart`);
@@ -207,11 +196,11 @@ class Player {
     }
 
     crashWith(object) {
-        if (this.y === object.y + 60) {
-            if ((this.x >= object.x && this.x < (object.x + 60)) ||
-                ((this.x + this.width) >= object.x && (this.x + this.width) < (object.x + 60))) {
-                return true;
-            }
+        if (this.x + this.width >= object.x &&
+            this.x <= object.x + 60 &&
+            this.y + this.height >= object.y &&
+            this.y <= object.y + 60) {
+            return true
         }
         return false;
     }
@@ -219,13 +208,15 @@ class Player {
     movePlayer(keyCode) {
         switch (keyCode) {
             case 39:
-                if (this.x <= 470) {
-                    return this.speedX += 4;
+                this.speedX += 2;
+                if (this.x >= 470) {
+                    this.x = 470;
                 }
                 break;
             case 37:
-                if (this.x >= 5) {
-                    return this.speedX -= 4;
+                this.speedX -= 2;
+                if (this.x <= 5) {
+                    this.x = 5;
                 }
         }
     }
