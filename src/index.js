@@ -57,12 +57,20 @@ document.addEventListener('keydown', function (e) {
 const myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
+<<<<<<< HEAD
         clearInterval(this.interval)
+=======
+        clearInterval(this.interval);
+>>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
         this.canvas.width = 500;
         this.canvas.height = 500;
         ctx = this.canvas.getContext("2d");
         gameBoard.appendChild(this.canvas);
+<<<<<<< HEAD
         this.interval = setInterval(updateGameScreen, 20)
+=======
+        this.interval = setInterval(updateGameScreen, 10);
+>>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
         this.frameNo = 0;
         this.spraySound = new Sound('../sound-effects/spray-effect.mp3');
         this.cleanSound = new Sound(`../sound-effects/clean-effect.mp3`);
@@ -81,6 +89,7 @@ const myGameArea = {
     },
     stop: function () {
         clearInterval(this.interval);
+        console.log(myGameArea.start.this)
         gameOver();
     }
 }
@@ -100,14 +109,14 @@ function updateGameScreen() {
 }
 
 function updateScoreScreen(player) {
-    ctx.font = "20px Creepster";
-    ctx.fillStyle = "#D03232";
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
     ctx.fillText(`Score: ${player.score}`, 400, 20);
 }
 
 function updateImmunityScreen(player) {
     ctx.font = "20px Creepster";
-    ctx.fillStyle = "#D03232";
+    ctx.fillStyle = "white";
     ctx.fillText(`Immunity: ${player.immunity}`, 400, 50);
 }
 
@@ -122,16 +131,28 @@ function icWarning() {
 function gameOver() {
     ctx.font = "40px Creepster";
     ctx.fillStyle = "Black";
+<<<<<<< HEAD
     ctx.fillText(`YOU LOST FROM THE VIRUS`, 80, 150);
     ctx.fillText(`YOU ARE GOING IN`, 120, 200);
     ctx.fillText(`QUARANTINE`, 170, 300);
+=======
+    ctx.fillText(`YOU LOST AGAINST THE VIRUS`, 50, 150);
+    ctx.fillText(`YOU ARE GOING INTO`, 120, 200);
+    ctx.fillText(`QUARANTINE`, 160, 305);
+>>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
     restartButton();
 }
 
 function showHighScore() {
+<<<<<<< HEAD
     ctx.font = "20px Creepster";
     ctx.fillStyle = "#D03232";
     ctx.fillText(`Highscore: ${highScore}`, 5, 20);
+=======
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
+    ctx.fillText(`Highscore: ${highscore}`, 5, 20);
+>>>>>>> b66b2c7f3da9a713880ff4f4b854e0cc0a86c342
 }
 
 
@@ -267,15 +288,15 @@ function updateCoronas() {
     }
 
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo % 120 === 0) {
+    if (myGameArea.frameNo % 90 === 0) {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 440) + 30;
         let speed = Math.ceil(Math.random() * 5);
 
         coronas.push({
-            x: x,
+            x,
             y: -60,
-            speed: speed,
+            speed
         });
 
     }
