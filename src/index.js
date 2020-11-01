@@ -123,16 +123,16 @@ function updateImmunityScreen(player) {
 function showHighScore() {
     ctx.font = "20px Play";
     ctx.fillStyle = "white";
-    ctx.fillText(`Highscore: ${highScore}`, 5, 20);
+    ctx.fillText(`Highscore: ${highScore}`, 5, 50);
 }
 
 function spraysLeftinBottle() {
     ctx.font = "20px Play";
     ctx.fillStyle = "white";
     if (sanitizerCounter > 0) {
-        ctx.fillText(`Sprays left: ${sanitizerCounter}`, 5, 50);
+        ctx.fillText(`Sprays left before refill: ${sanitizerCounter}`, 5, 20);
     } else {
-        ctx.fillText(`Refilling bottle, please wait...`, 5, 50);
+        ctx.fillText(`Refilling bottle, please wait...`, 5, 20);
     }
 }
 
