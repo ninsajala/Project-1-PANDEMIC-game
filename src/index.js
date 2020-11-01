@@ -161,6 +161,7 @@ function restartButton() {
         event.preventDefault()
         coronas = [];
         allSanitizers = [];
+        sanitizerCounter = 10;
         myGameArea.clear();
         player = new Player();
         myGameArea.start();
