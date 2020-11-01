@@ -2,7 +2,7 @@ let player, canvas, ctx;
 let highScore = 0;
 let coronas = [];
 let allSanitizers = [];
-let sanitizerCounter = 0
+let sanitizerCounter = 10
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
 const startButton = document.getElementById('start-button');
@@ -50,17 +50,16 @@ document.addEventListener('keyup', (e) => {
 
 document.addEventListener('keydown', function (e) {
     e.preventDefault();
-    console.log(sanitizerCounter)
-    if (sanitizerCounter % 8 !== 0 || sanitizerCounter === 0) {
+    if (sanitizerCounter !== 0) {
         if (e.keyCode === 32) {
             newSanitizerSpray();
-            sanitizerCounter++
+            sanitizerCounter--
         }
     } else {
-        alert('Refill sanitizer')
+
         setTimeout(function () {
-            sanitizerCounter++, 8000
-        })
+            sanitizerCounter = 10
+        }, 3000)
     }
 });
 
@@ -80,8 +79,6 @@ const myGameArea = {
         this.screamSound = new Sound(`../sound-effects/scream-effect.mp3`);
         this.warningSound = new Sound(`../sound-effects/tun-tun-tunn-effect.mp3`);
         this.gameOverSound = new Sound(`../sound-effects/dyingheartbeat.mp3`);
-        updateScoreScreen(player);
-        updateImmunityScreen(player);
     },
 
     clear: function () {
@@ -108,6 +105,7 @@ function updateGameScreen() {
     anyCollisions();
     icWarning();
     showHighScore()
+    spraysLeftinBottle()
 }
 
 function updateScoreScreen(player) {
@@ -117,9 +115,25 @@ function updateScoreScreen(player) {
 }
 
 function updateImmunityScreen(player) {
-    ctx.font = "20px Creepster";
+    ctx.font = "20px Play";
     ctx.fillStyle = "white";
-    ctx.fillText(`Immunity: ${player.immunity}`, 400, 50);
+    ctx.fillText(`Immunity: ${player.immunity}`, 390, 50);
+}
+
+function showHighScore() {
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
+    ctx.fillText(`Highscore: ${highScore}`, 5, 20);
+}
+
+function spraysLeftinBottle() {
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
+    if (sanitizerCounter > 0) {
+        ctx.fillText(`Sprays left: ${sanitizerCounter}`, 5, 50);
+    } else {
+        ctx.fillText(`Refilling bottle, please wait...`, 5, 50);
+    }
 }
 
 function icWarning() {
@@ -139,11 +153,6 @@ function gameOver() {
     restartButton();
 }
 
-function showHighScore() {
-    ctx.font = "20px Play";
-    ctx.fillStyle = "white";
-    ctx.fillText(`Highscore: ${highScore}`, 5, 20);
-}
 
 function restartButton() {
     let restartButton = document.querySelector(`.restart`);

@@ -70,8 +70,8 @@ h1 {
 }
 
 #start-button {
-  height: 70px;
-  width: 70px;
+  height: 100px;
+  width: 100px;
   border-radius: 50%;
   background-image: url("../images/start.png");
   background-size: cover;
@@ -104,7 +104,7 @@ h1 {
   align-items: center;
   background-color: rgba(112, 151, 251, 0.8);
   border: 1px solid #d03232;
-  border-radius: 10%;
+  border-radius: 15%;
 }
 
 .arrow-wrap {
