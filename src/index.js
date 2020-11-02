@@ -136,7 +136,7 @@ function updateScoreScreen(player) {
 function updateImmunityScreen(player) {
     ctx.font = "20px Play";
     ctx.fillStyle = "white";
-    ctx.fillText(`Immunity: ${player.immunity}`, 390, 50);
+    ctx.fillText(`Immunity: ${player.immunity}`, 370, 50);
 }
 
 function showHighScore() {
@@ -183,7 +183,7 @@ function youWon() {
     ctx.fillStyle = "Black";
     ctx.fillText(`YOU WON AGAINST THE VIRUS`, 50, 150);
     ctx.fillText(`WITH A SCORE OF: ${player.score}`, 120, 200);
-    ctx.fillText(`✨✨✨✨✨`, 160, 305);
+    ctx.fillText(`✨✨✨✨✨`, 150, 305);
     restartButton();
 }
 
