@@ -182,8 +182,8 @@ function youWon() {
     ctx.font = "40px Creepster";
     ctx.fillStyle = "Black";
     ctx.fillText(`YOU WON AGAINST THE VIRUS`, 50, 150);
-    ctx.fillText(`WITH A SCORE OF: ${player.score}`, 120, 200);
-    ctx.fillText(`✨✨✨✨✨`, 150, 305);
+    ctx.fillText(`WITH A SCORE OF: ${player.score}`, 100, 200);
+    ctx.fillText(`✨✨✨✨✨✨`, 130, 305);
     restartButton();
 }
 
