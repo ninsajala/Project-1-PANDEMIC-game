@@ -2,6 +2,9 @@ let player, canvas, ctx;
 let highScore = 0;
 let coronas = [];
 let allSanitizers = [];
+let allVaccins = [];
+let allBottles = [];
+
 let sanitizerCounter = 10
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
@@ -59,7 +62,7 @@ document.addEventListener('keydown', function (e) {
 
         setTimeout(function () {
             sanitizerCounter = 10
-        }, 3000)
+        }, 2000)
     }
 });
 
@@ -79,6 +82,12 @@ const myGameArea = {
         this.screamSound = new Sound(`../sound-effects/scream-effect.mp3`);
         this.warningSound = new Sound(`../sound-effects/tun-tun-tunn-effect.mp3`);
         this.gameOverSound = new Sound(`../sound-effects/dyingheartbeat.mp3`);
+        this.levelUpSound = new Sound(`../sound-effects/level-up-effect.mp3`)
+        this.winSound = new Sound(`../sound-effects/winSound.mp3`)
+        this.vaccinCatch = new Sound(`../sound-effects/catch-vaccin-effect.mp3`)
+        this.vaccinBreak = new Sound(`../sound-effects/break-vaccin-effect.mp3`)
+        this.bottleCatch = new Sound(`../sound-effects/refill-effect.mp3`)
+        this.bottleBreak = new Sound(`../sound-effects/shot-bottle-effect.mp3`)
     },
 
     clear: function () {
@@ -89,7 +98,6 @@ const myGameArea = {
     stop: function () {
         clearInterval(this.interval);
         console.log(myGameArea.start.this)
-        gameOver();
     }
 }
 
@@ -106,6 +114,17 @@ function updateGameScreen() {
     icWarning();
     showHighScore()
     spraysLeftinBottle()
+    showLevel()
+    if (player.level > 1) {
+        updateVaccins()
+        catchVaccin()
+        shootVaccin()
+    }
+    if (player.level > 3) {
+        updateExtraRefills()
+        catchBottle()
+        shootBottle()
+    }
 }
 
 function updateScoreScreen(player) {
@@ -124,6 +143,12 @@ function showHighScore() {
     ctx.font = "20px Play";
     ctx.fillStyle = "white";
     ctx.fillText(`Highscore: ${highScore}`, 5, 50);
+}
+
+function showLevel() {
+    ctx.font = "20px Play";
+    ctx.fillStyle = "white";
+    ctx.fillText(`Level: ${player.level}`, 5, 80);
 }
 
 function spraysLeftinBottle() {
@@ -153,6 +178,15 @@ function gameOver() {
     restartButton();
 }
 
+function youWon() {
+    ctx.font = "40px Creepster";
+    ctx.fillStyle = "Black";
+    ctx.fillText(`YOU WON AGAINST THE VIRUS`, 50, 150);
+    ctx.fillText(`WITH A SCORE OF: ${player.score}`, 120, 200);
+    ctx.fillText(`✨✨✨✨✨`, 160, 305);
+    restartButton();
+}
+
 
 function restartButton() {
     let restartButton = document.querySelector(`.restart`);
@@ -161,6 +195,8 @@ function restartButton() {
         event.preventDefault()
         coronas = [];
         allSanitizers = [];
+        allVaccins = [];
+        allBottles = [];
         sanitizerCounter = 10;
         myGameArea.clear();
         player = new Player();
@@ -193,6 +229,7 @@ class Player {
         this.speedX = 0;
         this.score = 0;
         this.immunity = 3;
+        this.level = 1
     }
 
     newPosition() {
@@ -237,8 +274,23 @@ class Player {
         }
     }
 
-    increaseScore(coronaSpeed) {
-        return this.score += coronaSpeed;
+    increaseScore() {
+        this.score += 5;
+        if (this.score % 50 === 0) {
+            if (player.level < 5) {
+                myGameArea.levelUpSound.play()
+                player.level++
+            }
+        }
+        if (this.score > 500) {
+            if (highScore < player.score) {
+                highScore = player.score
+            }
+            myGameArea.stop()
+            myGameArea.winSound.play()
+            youWon()
+        }
+        return this.score
     }
 }
 
@@ -272,6 +324,25 @@ class Sanitizer {
     }
 }
 
+function levelFrames() {
+    switch (player.level) {
+        case 1:
+            return 140;
+            break;
+        case 2:
+            return 120;
+            break;
+        case 3:
+            return 100;
+            break;
+        case 4:
+            return 80;
+            break;
+        case 5:
+            return 60;
+    }
+}
+
 function updateCoronas() {
     for (let i = 0; i < coronas.length; i++) {
         let oneCorona = coronas[i];
@@ -289,7 +360,7 @@ function updateCoronas() {
     }
 
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo % 90 === 0) {
+    if (myGameArea.frameNo % levelFrames() === 0) {
         myGameArea.fallSound.play();
         let x = Math.floor(Math.random() * 440) + 30;
         let speed = Math.ceil(Math.random() * 5);
@@ -297,6 +368,65 @@ function updateCoronas() {
         coronas.push({
             x,
             y: -60,
+            speed
+        });
+
+    }
+}
+
+
+function updateVaccins() {
+    for (let i = 0; i < allVaccins.length; i++) {
+        let oneVaccin = allVaccins[i];
+        oneVaccin.y += 1;
+        this.width = 50;
+        this.height = 50;
+        let img = new Image();
+        img.src = `images/vaccin.png`;
+        ctx.drawImage(img, oneVaccin.x, oneVaccin.y, this.width, this.height);
+
+        if (oneVaccin.y > 500) {
+            allVaccins.splice(i, 1);
+            i--;
+        }
+    }
+
+    if (myGameArea.frameNo % 400 === 0) {
+        let x = Math.floor(Math.random() * 440) + 30;
+        let speed = 5;
+
+        allVaccins.push({
+            x,
+            y: -50,
+            speed
+        });
+
+    }
+}
+
+function updateExtraRefills() {
+    for (let i = 0; i < allBottles.length; i++) {
+        let oneBottle = allBottles[i];
+        oneBottle.y += 1;
+        this.width = 30;
+        this.height = 50;
+        let img = new Image();
+        img.src = `images/bottle.png`;
+        ctx.drawImage(img, oneBottle.x, oneBottle.y, this.width, this.height);
+
+        if (oneBottle.y > 500) {
+            allBottles.splice(i, 1);
+            i--;
+        }
+    }
+
+    if (myGameArea.frameNo % 350 === 0) {
+        let x = Math.floor(Math.random() * 440) + 30;
+        let speed = 5;
+
+        allBottles.push({
+            x,
+            y: -50,
             speed
         });
 
@@ -335,7 +465,8 @@ function anyCollisions() {
                 }
                 myGameArea.gameOverSound.play();
                 setTimeout(function () {
-                    myGameArea.stop()
+                    myGameArea.stop(),
+                        gameOver();
                 }, 500);
             }
         }
@@ -349,7 +480,51 @@ function checkIfSanitized() {
                 myGameArea.cleanSound.play();
                 coronas.splice(j, 1);
                 allSanitizers.splice(i, 1);
-                player.increaseScore(coronas[i].speed);
+                player.increaseScore();
+            }
+        }
+    }
+}
+
+function catchVaccin() {
+    for (i = 0; i < allVaccins.length; i++) {
+        if (player.crashWith(allVaccins[i])) {
+            myGameArea.vaccinCatch.play()
+            player.immunity++;
+            allVaccins.splice(i, 1);
+        }
+    }
+}
+
+function shootVaccin() {
+    for (let i = 0; i < allSanitizers.length; i++) {
+        for (let j = 0; j < allVaccins.length; j++) {
+            if (allSanitizers[i].crashWith(allVaccins[j])) {
+                myGameArea.vaccinBreak.play()
+                allVaccins.splice(j, 1);
+                allSanitizers.splice(i, 1);
+            }
+        }
+    }
+}
+
+function catchBottle() {
+    for (i = 0; i < allBottles.length; i++) {
+        if (player.crashWith(allBottles[i])) {
+            myGameArea.bottleCatch.play()
+            sanitizerCounter += 10;
+            allBottles.splice(i, 1);
+        }
+    }
+}
+
+function shootBottle() {
+    for (let i = 0; i < allSanitizers.length; i++) {
+        for (let j = 0; j < allBottles.length; j++) {
+            if (allSanitizers[i].crashWith(allBottles[j])) {
+                myGameArea.bottleBreak.play()
+                allBottles.splice(j, 1);
+                allSanitizers.splice(i, 1);
             }
         }
     }
