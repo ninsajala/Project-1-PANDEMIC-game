@@ -11,9 +11,19 @@ let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`)
 const startButton = document.getElementById('start-button');
 const playMusic = document.querySelector('#play-music');
 const gameBoard = document.getElementById('game-board');
+const instructions = document.querySelector('.instructions');
+const mobile = window.matchMedia("(max-width: 700px)")
+
+
+function checkIfMobile() {
+    if (mobile.matches) {
+        instructions.innerHTML = `<p>Sorry, we are not available on small screens yet. Try the game on a computer!</p>`
+    }
+}
+
+window.addEventListener('load', checkIfMobile())
 
 startButton.addEventListener('click', function () {
-    const instructions = document.querySelector('.instructions');
     instructions.style.display = 'none';
 
     const h1 = document.querySelector('h1');
