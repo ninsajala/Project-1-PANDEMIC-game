@@ -1,3 +1,5 @@
+let allBottles = [];
+
 function updateExtraRefills() {
     for (let i = 0; i < allBottles.length; i++) {
         let oneBottle = allBottles[i];

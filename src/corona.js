@@ -1,3 +1,5 @@
+let coronas = [];
+
 function updateCoronas() {
     for (let i = 0; i < coronas.length; i++) {
         let oneCorona = coronas[i];

@@ -1,3 +1,6 @@
+let allSanitizers = [];
+let sanitizerCounter = 10
+
 class Sanitizer {
     constructor(x) {
         this.x = x;
@@ -52,7 +55,6 @@ function newSanitizerSpray() {
     let sanitizer = new Sanitizer(player.x);
     allSanitizers.push(sanitizer);
 }
-
 
 function updateSanitizers() {
     for (let i = 0; i < allSanitizers.length; i++) {

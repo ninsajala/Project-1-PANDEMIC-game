@@ -1,3 +1,5 @@
+let allVaccins = [];
+
 function updateVaccins() {
     for (let i = 0; i < allVaccins.length; i++) {
         let oneVaccin = allVaccins[i];

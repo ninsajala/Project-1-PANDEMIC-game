@@ -1,3 +1,5 @@
+let highScore = 0;
+
 function checkIfMobile() {
     if (mobile.matches) {
         instructions.innerHTML = `<p>Sorry, we are not available on small screens yet. Try the game on a computer!</p>`

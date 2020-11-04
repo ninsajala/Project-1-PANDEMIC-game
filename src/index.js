@@ -1,11 +1,4 @@
 let player, canvas, ctx;
-let highScore = 0;
-let coronas = [];
-let allSanitizers = [];
-let allVaccins = [];
-let allBottles = [];
-
-let sanitizerCounter = 10
 let backGroundMusic = new Sound(`../sound-effects/background-corona-cumbia.mp3`);
 
 const startButton = document.getElementById('start-button');
