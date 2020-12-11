@@ -1,60 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Primary Meta Tags -->
+    <title>PANDEMIC</title>
+    <meta name="title" content="PANDEMIC" />
+    <meta
+      name="description"
+      content="A game that will entertain you during the lockdown and make you able to have a laugh about the situation."
+    />
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <link rel="stylesheet" href="styles/style.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-        <link rel="icon" type="image/x-icon" href="favicon.ico" />
-        <title>PANDEMIC</title>
-    </head>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pandemic-ironhack.netlify.app/" />
+    <meta property="og:title" content="PANDEMIC" />
+    <meta
+      property="og:description"
+      content="A game that will entertain you during the lockdown and make you able to have a laugh about the situation."
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/ddudasjs9/image/upload/v1607717734/Schermafbeelding_2020-12-11_om_21.11.48_uust1c.png"
+    />
 
-    <body>
-        <header>
-            <h1 class="shake">PANDEMIC</h1>
-        </header>
-        <div class="content-wrapper">
-            <div class=" game-intro">
-                <span id="play-music" title='Play Music'></span>
-                <span class="restart"></span>
-                <div class="instructions">
-                    <p>You are on a mission to save the world from the corona virus!</p>
-                    <p>Use the LEFT and RIGHT arrow to find the correct position and use SPACE to shoot sanitizer and
-                        eliminate the virus!</p>
-                    <div class="arrow-wrap">
-                        <img src="images/arrow-keys.png" alt="arrow keys" class="arrows-img" />
-                    </div>
-                    <div class="space-wrap">
-                        <img src="images/icon_keyboard_spacebar..png" alt="space bar" class="space-img">
-                    </div>
-                    <p>Make sure that the virus doesn't touch you, because this will decrease your
-                        immunity!</p>
-                    <p>When you level up, you might see some other objects appearing. Better to catch them than to shoot
-                        them..</p>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://pandemic-ironhack.netlify.app/"
+    />
+    <meta property="twitter:title" content="PANDEMIC" />
+    <meta
+      property="twitter:description"
+      content="A game that will entertain you during the lockdown and make you able to have a laugh about the situation."
+    />
+    <meta
+      property="twitter:image"
+      content="https://res.cloudinary.com/ddudasjs9/image/upload/v1607717734/Schermafbeelding_2020-12-11_om_21.11.48_uust1c.png"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Play&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-                    <button id="start-button"></button>
-                </div>
-            </div>
+    <title>PANDEMIC</title>
+  </head>
 
-            <div id="game-board">
-            </div>
+  <body>
+    <header>
+      <h1 class="shake">PANDEMIC</h1>
+    </header>
+    <div class="content-wrapper">
+      <div class="game-intro">
+        <span id="play-music" title="Play Music"></span>
+        <span class="restart"></span>
+        <div class="instructions">
+          <p>You are on a mission to save the world from the corona virus!</p>
+          <p
+            >Use the LEFT and RIGHT arrow to find the correct position and use
+            SPACE to shoot sanitizer and eliminate the virus!</p
+          >
+          <div class="arrow-wrap">
+            <img
+              src="images/arrow-keys.png"
+              alt="arrow keys"
+              class="arrows-img"
+            />
+          </div>
+          <div class="space-wrap">
+            <img
+              src="images/icon_keyboard_spacebar..png"
+              alt="space bar"
+              class="space-img"
+            />
+          </div>
+          <p
+            >Make sure that the virus doesn't touch you, because this will
+            decrease your immunity!</p
+          >
+          <p
+            >When you level up, you might see some other objects appearing.
+            Better to catch them than to shoot them..</p
+          >
+
+          <button id="start-button"></button>
         </div>
+      </div>
 
-        <footer>
-            <span>This page was coded by <a href="https://github.com/defSabe" target="_blank">Sabela</a>,
-                <a href="https://github.com/Sophietic" target="_blank">Sophie</a> and
-                <a href="https://github.com/ninsajala" target="_blank">Nina</a>
-            </span></footer>
-        <script src="./src/player.js"></script>
-        <script src="./src/vaccin.js"></script>
-        <script src="./src/refill.js"></script>
-        <script src="./src/corona.js"></script>
-        <script src="./src/sanitizer.js"></script>
-        <script src="./src/screenfunctions.js"></script>
-        <script src="./src/index.js"></script>
-    </body>
+      <div id="game-board"> </div>
+    </div>
 
+    <footer>
+      <span
+        >This page was coded by
+        <a href="https://github.com/defSabe" target="_blank">Sabela</a>,
+        <a href="https://github.com/Sophietic" target="_blank">Sophie</a> and
+        <a href="https://github.com/ninsajala" target="_blank">Nina</a>
+      </span></footer
+    >
+    <script src="./src/player.js"></script>
+    <script src="./src/vaccin.js"></script>
+    <script src="./src/refill.js"></script>
+    <script src="./src/corona.js"></script>
+    <script src="./src/sanitizer.js"></script>
+    <script src="./src/screenfunctions.js"></script>
+    <script src="./src/index.js"></script>
+  </body>
 </html>
